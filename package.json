@@ -2,8 +2,10 @@
   "name": "muscleatlas",
   "version": "2.1.0",
   "scripts": {
+    "check": "node scripts/version.js check",
+    "bump": "node scripts/version.js bump",
     "build:www": "node scripts/build-www.js",
-    "sync": "npm run build:www && cap sync android",
+    "sync": "npm run check && npm run build:www && cap sync android",
     "open:android": "cap open android"
   },
   "repository": {

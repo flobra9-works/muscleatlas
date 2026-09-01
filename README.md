@@ -203,12 +203,20 @@ Sicherungen der alten deutschen Version).
 ## Technik (für später)
 
 - Reines HTML/CSS/JS ohne Build-Schritt (`index.html` + `js/` + `data/`).
-- Bei Änderungen an CSS/JS: die `?v=`-Nummer in `index.html` **und** `sw.js`
-  hochzählen (verhindert veraltete Browser-Caches) — **auch `V` in
-  `js/bodymap.js`**, sonst liefert der Browser die alte ID-Map und Klicks
-  landen auf den Regionen des letzten Builds. Aktuell: `v=10`,
-  Cache-Name `muscleatlas-v10`. Beim lokalen Entwickeln sonst den Service Worker
-  abmelden, sonst siehst du trotz Reload den alten Stand.
+- **Bei Änderungen an CSS/JS/Grafik: `npm run bump`.** Das zählt die `?v=`-Nummer
+  an allen drei Stellen gleichzeitig hoch — `index.html`, `sw.js` (inkl.
+  Cache-Name) und `V` in `js/bodymap.js`. Von Hand geht das regelmäßig schief,
+  und der Fehler ist unsichtbar: Der Browser liefert einfach weiter die alte
+  Datei, bei der ID-Map landen Klicks dann auf den Regionen des letzten Builds.
+- **`npm run check`** prüft das (läuft auch in der CI) und findet zusätzlich
+  zwei Dinge, die den Offline-Betrieb ebenso lautlos zerlegen:
+  eine in `index.html` geladene Datei, die im Service Worker fehlt (offline
+  kaputt), und eine im Service Worker gelistete Datei, die es nicht mehr gibt —
+  `cache.addAll` bricht bei einem einzigen 404 komplett ab, dann wird
+  **gar nichts** gecached.
+  Aktuell: `v=14`, Cache-Name `muscleatlas-v14`.
+- Beim lokalen Entwickeln den Service Worker abmelden, sonst siehst du trotz
+  Reload hartnäckig den alten Stand.
 - Deep-Links: `index.html?gruppe=ruecken&region=lat`, `?uebung=rudern-kabel`, `?tab=training`, `?tab=historie`.
 - Übungsdatenbank: `data/exercises.js` (122 Übungen, englisch, `nameDe` für die
   Suche; 17 interaktive Modelle — redaktionelle Richtwerte).
