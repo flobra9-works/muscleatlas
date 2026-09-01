@@ -93,6 +93,25 @@ function pruefe() {
     if (!fs.existsSync(P(rel))) probleme.push(`sw.js caches ${rel}, which does not exist`);
   });
 
+  // The Android build copies a fixed folder list into www/. Anything the app
+  // caches but build-www.js does not copy is simply absent from the APK — the
+  // web version works, the installed app is broken, and nothing warns you.
+  // (This shipped once: the body plates live in assets/, which was not copied.)
+  const bww = lies('scripts/build-www.js');
+  const kopiert = new Set([
+    ...(/const DATEIEN = \[([^\]]*)\]/.exec(bww)?.[1] || '').match(/'([^']+)'/g) || [],
+    ...(/const ORDNER = \[([^\]]*)\]/.exec(bww)?.[1] || '').match(/'([^']+)'/g) || []
+  ].map(s => s.replace(/'/g, '')));
+
+  [...new Set(swListe.map(blank).filter(Boolean))].forEach(rel => {
+    if (rel.endsWith('/')) return;
+    const oben = rel.split('/')[0];
+    if (!kopiert.has(oben) && !kopiert.has(rel)) {
+      probleme.push(`sw.js caches ${rel}, but scripts/build-www.js does not copy ` +
+        `"${oben}" into www/ — it would be missing from the APK`);
+    }
+  });
+
   return { version: v.html, probleme };
 }
 

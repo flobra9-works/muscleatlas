@@ -13,7 +13,10 @@ const WURZEL = path.join(__dirname, '..');
 const ZIEL = path.join(WURZEL, 'www');
 
 const DATEIEN = ['index.html', 'manifest.json'];
-const ORDNER = ['css', 'data', 'js', 'icons'];
+// Keep in step with the service-worker cache list — scripts/version.js checks
+// that these cover everything sw.js caches. 'assets' holds the body plates and
+// id maps; leaving it out ships an APK whose body map cannot load.
+const ORDNER = ['css', 'data', 'js', 'icons', 'assets'];
 
 function leere(ordner) {
   if (fs.existsSync(ordner)) fs.rmSync(ordner, { recursive: true, force: true });
