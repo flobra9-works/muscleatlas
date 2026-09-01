@@ -51,6 +51,7 @@ const App = {
       b.classList.toggle('aktiv', b.getAttribute('data-tab') === name));
     if (name === 'workouts') Workouts.render();
     if (name === 'training') Training.render();
+    if (name === 'historie') Historie.render();
     window.scrollTo({ top: 0 });
   },
 
@@ -59,29 +60,25 @@ const App = {
     Uebungen.renderGruppenListe();
     if (this.aktiverTab === 'workouts') Workouts.render();
     if (this.aktiverTab === 'training') Training.render();
-    this.aktualisiereGeschlechtKnopf();
+    if (this.aktiverTab === 'historie') Historie.render();
   },
 
-  /* ---------- Body view (male/female) ---------- */
-
-  aktualisiereGeschlechtKnopf() {
-    const btn = document.getElementById('geschlechtToggle');
-    btn.textContent = Speicher.daten.geschlecht === 'w' ? '♀' : '♂';
-  },
+  /* ---------- Sex (calorie formulas only) ----------
+     This used to switch the body artwork between a male and a female figure.
+     The anatomy is now a render of the Z-Anatomy model, which only exists as a
+     male body, so the setting no longer changes anything visual — it feeds the
+     Keytel and Mifflin-St Jeor formulas in js/heartrate.js and lives in
+     Settings rather than pretending to be a view toggle in the header. */
 
   setzeGeschlecht(g, leise) {
     Speicher.daten.geschlecht = g;
     Speicher.speichere();
-    BodyMap.render();
-    this.aktualisiereGeschlechtKnopf();
-    if (!leise) this.toast(g === 'w' ? 'Body view: female' : 'Body view: male');
+    if (!leise) this.toast(g === 'w' ? 'Calorie formula: female' : 'Calorie formula: male');
   },
 
   /* ---------- Onboarding ---------- */
 
   zeigeOnboarding() {
-    document.getElementById('onboardingMann').innerHTML = BodySVG.erstelle('m', 'vorne');
-    document.getElementById('onboardingFrau').innerHTML = BodySVG.erstelle('w', 'vorne');
     this.zeigeOverlay('onboarding');
     document.getElementById('wahlMann').addEventListener('click', () => this._onboardingFertig('m'));
     document.getElementById('wahlFrau').addEventListener('click', () => this._onboardingFertig('w'));
@@ -126,20 +123,23 @@ const App = {
       schalter('sTon', 'Sound', 'Beeps for countdown and end of rest', e.ton) +
       schalter('sVibration', 'Vibration', 'On your phone when rest ends', e.vibration) +
 
-      `<div class="abschnitt-titel">Body view</div>` +
+      `<div class="abschnitt-titel">Sex</div>` +
+      `<div class="hinweis-klein" style="margin-bottom:8px;">Only used for the calorie formulas (Keytel and Mifflin-St Jeor), which differ by sex. The anatomy illustration is male either way — see the note at the bottom.</div>` +
       `<div class="chip-zeile">` +
       `<button class="chip ${Speicher.daten.geschlecht !== 'w' ? 'aktiv' : ''}" data-g="m">♂ Male</button>` +
       `<button class="chip ${Speicher.daten.geschlecht === 'w' ? 'aktiv' : ''}" data-g="w">♀ Female</button>` +
       `</div>` +
 
       `<div class="abschnitt-titel">Data</div>` +
-      `<div class="hinweis-klein" style="margin-bottom:8px;">All data stays on this device only (no account, no cloud). Back it up to a file regularly.</div>` +
+      `<div class="hinweis-klein" style="margin-bottom:8px;">All data stays on this device only (no account, no cloud). Backups include your workouts <b>and</b> your training history — back them up to a file regularly.</div>` +
       `<div class="btn-zeile" style="margin-top:6px;">` +
       `<button class="btn klein" id="sExport">⬇ Create backup</button>` +
       `<button class="btn klein" id="sImport">⬆ Load backup</button>` +
       `</div>` +
       `<input type="file" id="sImportDatei" accept=".json,application/json" style="display:none">` +
-      `<div class="hinweis-klein" style="margin-top:16px; text-align:center;">MuscleAtlas · Version 2.0 · Calorie and activation values are estimates, not medical advice.</div>`;
+      `<div class="hinweis-klein" style="margin-top:16px; text-align:center;">MuscleAtlas · Version 2.1 · Calorie and activation values are estimates, not medical advice.<br>` +
+      `Anatomy artwork rendered from <b>Z-Anatomy</b> (CC BY-SA 4.0), derived from <b>BodyParts3D</b> ` +
+      `(CC BY-SA 2.1 Japan). Only a male model is openly available.</div>`;
 
     this.zeigeOverlay('einstellungen');
     wrap.querySelector('[data-schliessen]').addEventListener('click', () => this.schliesseOverlay('einstellungen'));
@@ -185,6 +185,7 @@ const App = {
         this.setzeGeschlecht(chip.getAttribute('data-g'));
         wrap.querySelectorAll('[data-g]').forEach(c =>
           c.classList.toggle('aktiv', c === chip));
+        aktualisiereKalorien();          // the formula just changed
       });
     });
 
@@ -198,7 +199,7 @@ const App = {
       leser.onload = () => {
         const erg = Speicher.importiere(String(leser.result));
         if (erg.ok) {
-          this.toast(`Import successful (${erg.anzahl} workouts).`);
+          this.toast(`Import successful (${erg.anzahl} workouts, ${erg.sessions} sessions).`);
           this.schliesseOverlay('einstellungen');
           this.alleAnsichtenAktualisieren();
         } else this.toast('⚠ ' + erg.fehler);
@@ -216,10 +217,7 @@ const App = {
     this.initOverlays();
     Uebungen.init();
     BodyMap.render();
-    this.aktualisiereGeschlechtKnopf();
 
-    document.getElementById('geschlechtToggle').addEventListener('click', () =>
-      this.setzeGeschlecht(Speicher.daten.geschlecht === 'w' ? 'm' : 'w'));
     document.getElementById('einstellungenBtn').addEventListener('click', () =>
       this.zeigeEinstellungen());
     document.querySelectorAll('.tab-bar button').forEach(btn =>
@@ -240,7 +238,7 @@ const App = {
 
     if (!Speicher.daten.geschlecht) this.zeigeOnboarding();
 
-    // Deep links: ?gruppe=ruecken[&region=lat], ?uebung=rudern-kabel, ?tab=training
+    // Deep links: ?gruppe=ruecken[&region=lat], ?uebung=rudern-kabel, ?tab=training|historie
     const params = new URLSearchParams(location.search);
     if (params.get('tab')) this.zeigeTab(params.get('tab'));
     if (params.get('gruppe')) Uebungen.waehleGruppe(params.get('gruppe'), params.get('region'));

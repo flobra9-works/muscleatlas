@@ -1,0 +1,62 @@
+name: Android APK
+
+# Builds the installable Android app in the cloud — no Android Studio, no JDK
+# and no ~10 GB SDK download on the dev machine.
+#
+# Run it: GitHub → Actions → "Android APK" → "Run workflow".
+# Result: the "muscleatlas-debug-apk" artifact on the run page. Download it,
+# copy the .apk to the phone and open it (allow "install unknown apps" once).
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'manifest.json'
+      - 'css/**'
+      - 'js/**'
+      - 'data/**'
+      - 'icons/**'
+      - 'android/**'
+      - 'scripts/**'
+      - 'capacitor.config.json'
+      - 'package*.json'
+      - '.github/workflows/android.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Copy the web app into the native project
+        run: npm run sync
+
+      - name: Build debug APK
+        working-directory: android
+        # chmod because Git on Windows does not preserve the executable bit
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: muscleatlas-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error

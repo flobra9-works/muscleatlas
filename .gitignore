@@ -1,0 +1,21 @@
+# Local tooling, not part of the app
+.claude/
+.remember/
+
+# Capacitor / Node
+node_modules/
+www/
+# assets/ holds the source images the app icons are generated from — keep them
+
+# Android build output (the android/ project itself IS committed —
+# the CI workflow needs it to build the APK)
+android/build/
+android/app/build/
+android/.gradle/
+android/local.properties
+android/capacitor-cordova-android-plugins/
+android/app/src/main/assets/public/
+android/app/src/main/assets/capacitor.config.json
+android/app/src/main/assets/capacitor.plugins.json
+drafts/
+vendor/

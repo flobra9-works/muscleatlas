@@ -11,6 +11,7 @@ const Speicher = {
       profil: { alter: null, groesse: null, gewicht: null, aktivitaet: 1.375 },
       einstellungen: { sprachausgabe: true, ton: true, vibration: true },
       workouts: [],                     // { id, name, uebungen: [{ uebungId, saetze, wdh, gewicht, pause }] }
+      verlauf: [],                      // finished sessions, oldest first (see speichereSession)
       spotifyUrl: '',
       letztesWorkoutId: null
     };
@@ -34,6 +35,7 @@ const Speicher = {
     this.daten.profil = Object.assign(this.standard().profil, (geladen && geladen.profil) || {});
     this.daten.einstellungen = Object.assign(this.standard().einstellungen, (geladen && geladen.einstellungen) || {});
     if (!Array.isArray(this.daten.workouts)) this.daten.workouts = [];
+    if (!Array.isArray(this.daten.verlauf)) this.daten.verlauf = [];
   },
 
   speichere() {
@@ -87,6 +89,63 @@ const Speicher = {
     return true;
   },
 
+  /* ---------- Training history ---------- */
+
+  MAX_SESSIONS: 500,
+
+  // rec: { workoutId, name, start, dauerMs, saetze: [{ uebungId, satz, wdh, gewicht }],
+  //        geplanteSaetze, oPuls, maxPuls, kcal, kcalQuelle }
+  speichereSession(rec) {
+    const eintrag = Object.assign({ id: 's' + Date.now() + Math.floor(Math.random() * 999) }, rec);
+    this.daten.verlauf.push(eintrag);
+    if (this.daten.verlauf.length > this.MAX_SESSIONS) {
+      this.daten.verlauf = this.daten.verlauf.slice(-this.MAX_SESSIONS);
+    }
+    this.speichere();
+    return eintrag;
+  },
+
+  loescheSession(id) {
+    this.daten.verlauf = this.daten.verlauf.filter(s => s.id !== id);
+    this.speichere();
+  },
+
+  // Newest first — that is how every view wants it.
+  sessionsNeuZuerst() {
+    return this.daten.verlauf.slice().sort((a, b) => b.start - a.start);
+  },
+
+  // All logged sets of one exercise, newest session first:
+  // [{ session, saetze: [{ satz, wdh, gewicht }] }]
+  verlaufFuerUebung(uebungId) {
+    return this.sessionsNeuZuerst()
+      .map(s => ({ session: s, saetze: (s.saetze || []).filter(x => x.uebungId === uebungId) }))
+      .filter(x => x.saetze.length);
+  },
+
+  // What the user actually lifted last time — pre-fills the next session.
+  letzteWerte(uebungId) {
+    const v = this.verlaufFuerUebung(uebungId);
+    if (!v.length) return null;
+    const letzte = v[0].saetze;
+    const s = letzte[letzte.length - 1];
+    return { gewicht: s.gewicht, wdh: s.wdh, datum: v[0].session.start };
+  },
+
+  // Heaviest set ever; ties broken by reps.
+  besterSatz(uebungId) {
+    let best = null;
+    this.daten.verlauf.forEach(s => {
+      (s.saetze || []).forEach(x => {
+        if (x.uebungId !== uebungId) return;
+        if (!best || x.gewicht > best.gewicht || (x.gewicht === best.gewicht && x.wdh > best.wdh)) {
+          best = { gewicht: x.gewicht, wdh: x.wdh, datum: s.start };
+        }
+      });
+    });
+    return best;
+  },
+
   /* ---------- Export / Import ---------- */
 
   exportiere() {
@@ -96,6 +155,7 @@ const Speicher = {
       profil: this.daten.profil,
       einstellungen: this.daten.einstellungen,
       workouts: this.daten.workouts,
+      verlauf: this.daten.verlauf,
       spotifyUrl: this.daten.spotifyUrl
     };
     const blob = new Blob([JSON.stringify(inhalt, null, 2)], { type: 'application/json' });
@@ -131,7 +191,32 @@ const Speicher = {
           pause: Math.max(0, parseInt(e.pause, 10) || 90)
         }))
     }));
+    // Training history (older backups simply have none)
+    this.daten.verlauf = (Array.isArray(inhalt.verlauf) ? inhalt.verlauf : [])
+      .filter(s => s && typeof s.start === 'number')
+      .map(s => ({
+        id: String(s.id || 's' + s.start),
+        workoutId: s.workoutId || null,
+        name: String(s.name || 'Workout'),
+        start: s.start,
+        dauerMs: Math.max(0, parseInt(s.dauerMs, 10) || 0),
+        geplanteSaetze: Math.max(0, parseInt(s.geplanteSaetze, 10) || 0),
+        saetze: (Array.isArray(s.saetze) ? s.saetze : [])
+          .filter(x => x && uebungVonId(x.uebungId))
+          .map(x => ({
+            uebungId: x.uebungId,
+            satz: Math.max(1, parseInt(x.satz, 10) || 1),
+            wdh: Math.max(0, parseInt(x.wdh, 10) || 0),
+            gewicht: Math.max(0, parseFloat(x.gewicht) || 0)
+          })),
+        oPuls: s.oPuls || null,
+        maxPuls: s.maxPuls || null,
+        kcal: s.kcal || null,
+        kcalQuelle: s.kcalQuelle || null
+      }))
+      .sort((a, b) => a.start - b.start)
+      .slice(-this.MAX_SESSIONS);
     this.speichere();
-    return { ok: true, anzahl: this.daten.workouts.length };
+    return { ok: true, anzahl: this.daten.workouts.length, sessions: this.daten.verlauf.length };
   }
 };

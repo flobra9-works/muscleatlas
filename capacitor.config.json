@@ -1,0 +1,9 @@
+{
+  "appId": "io.github.flobra9works.muscleatlas",
+  "appName": "MuscleAtlas",
+  "webDir": "www",
+  "backgroundColor": "#0c0e1a",
+  "android": {
+    "backgroundColor": "#0c0e1a"
+  }
+}

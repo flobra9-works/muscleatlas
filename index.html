@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <link rel="stylesheet" href="css/style.css?v=5">
+  <link rel="stylesheet" href="css/style.css?v=10">
 </head>
 <body>
 
@@ -19,7 +19,6 @@
       <span class="wortmarke">Muscle<b>Atlas</b></span>
     </div>
     <div class="header-aktionen">
-      <button id="geschlechtToggle" class="icon-btn" title="Switch body view (male/female)">♂</button>
       <button id="einstellungenBtn" class="icon-btn" title="Settings" aria-label="Settings">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a7.6 7.6 0 0 0 0-3l2-1.5-2-3.5-2.4 1a7.7 7.7 0 0 0-2.6-1.5L14 2.5h-4L9.6 5a7.7 7.7 0 0 0-2.6 1.5l-2.4-1-2 3.5 2 1.5a7.6 7.6 0 0 0 0 3l-2 1.5 2 3.5 2.4-1a7.7 7.7 0 0 0 2.6 1.5l.4 2.5h4l.4-2.5a7.7 7.7 0 0 0 2.6-1.5l2.4 1 2-3.5-2-1.5z"/></svg>
       </button>
@@ -37,16 +36,7 @@
         <span class="hinweis-klein" id="kartenHinweis">Tap a muscle group</span>
       </div>
 
-      <div id="koerperkarte" class="koerperkarte">
-        <div class="koerper-spalte">
-          <div class="ansicht-label">Front</div>
-          <div id="svgVorne"></div>
-        </div>
-        <div class="koerper-spalte">
-          <div class="ansicht-label">Back</div>
-          <div id="svgHinten"></div>
-        </div>
-      </div>
+      <div id="koerperkarte" class="koerperkarte"></div>
 
       <div id="gruppenListe" class="gruppen-liste versteckt"></div>
 
@@ -67,6 +57,11 @@
     <section id="tab-training" class="tab-panel">
       <div id="trainingInhalt"></div>
     </section>
+
+    <!-- ============ TAB 4: HISTORY ============ -->
+    <section id="tab-historie" class="tab-panel">
+      <div id="historieInhalt"></div>
+    </section>
   </main>
 
   <nav class="tab-bar">
@@ -82,23 +77,30 @@
       <svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 13V9M9.5 2.5h5"/></svg>
       Training
     </button>
+    <button data-tab="historie" aria-label="Training history">
+      <svg viewBox="0 0 24 24"><path d="M4 20V9M9.3 20V4M14.7 20v-7M20 20V6"/></svg>
+      History
+    </button>
   </nav>
 
   <!-- ============ Onboarding ============ -->
   <div id="onboarding" class="overlay versteckt" role="dialog" aria-modal="true">
     <div class="overlay-inhalt onboarding-inhalt">
       <h1>Welcome to Muscle<span class="akzent-text">Atlas</span> 💪</h1>
-      <p>Choose your body view — you can switch it anytime, top right.</p>
-      <div class="geschlecht-wahl">
+      <p>One quick thing: calorie estimates use a different formula per sex.
+         You can change this any time in Settings&nbsp;⚙.</p>
+      <div class="geschlecht-wahl schlicht">
         <button id="wahlMann">
-          <div id="onboardingMann"></div>
+          <span class="wahl-zeichen">♂</span>
           <span class="wahl-label">Male</span>
         </button>
         <button id="wahlFrau">
-          <div id="onboardingFrau"></div>
+          <span class="wahl-zeichen">♀</span>
           <span class="wahl-label">Female</span>
         </button>
       </div>
+      <p class="hinweis-klein" style="margin-top:14px;">The anatomy illustration is male —
+         it is the only openly licensed 3D model available.</p>
     </div>
   </div>
 
@@ -117,6 +119,11 @@
     <div class="overlay-inhalt" id="workoutWahlInhalt"></div>
   </div>
 
+  <!-- ============ Session detail (history) ============ -->
+  <div id="sessionDetail" class="overlay versteckt" role="dialog" aria-modal="true">
+    <div class="overlay-inhalt" id="sessionDetailInhalt"></div>
+  </div>
+
   <!-- ============ Exercise picker (in the workout editor) ============ -->
   <div id="uebungsPicker" class="overlay versteckt" role="dialog" aria-modal="true">
     <div class="overlay-inhalt" id="uebungsPickerInhalt"></div>
@@ -124,15 +131,16 @@
 
   <div id="toast" role="status"></div>
 
-  <script src="data/muscles.js?v=5"></script>
-  <script src="data/bodysvg.js?v=5"></script>
-  <script src="data/exercises.js?v=5"></script>
-  <script src="js/state.js?v=5"></script>
-  <script src="js/heartrate.js?v=5"></script>
-  <script src="js/bodymap.js?v=5"></script>
-  <script src="js/exercises.js?v=5"></script>
-  <script src="js/workouts.js?v=5"></script>
-  <script src="js/training.js?v=5"></script>
-  <script src="js/app.js?v=5"></script>
+  <script src="data/muscles.js?v=10"></script>
+  <script src="data/bodyregions.js?v=10"></script>
+  <script src="data/exercises.js?v=10"></script>
+  <script src="js/state.js?v=10"></script>
+  <script src="js/heartrate.js?v=10"></script>
+  <script src="js/bodymap.js?v=10"></script>
+  <script src="js/exercises.js?v=10"></script>
+  <script src="js/workouts.js?v=10"></script>
+  <script src="js/training.js?v=10"></script>
+  <script src="js/history.js?v=10"></script>
+  <script src="js/app.js?v=10"></script>
 </body>
 </html>

@@ -178,7 +178,26 @@ const UEBUNGEN = [
     id: 'kabel-crossover', name: 'Cable Crossover', nameDe: 'Kabelzug über Kreuz',
     kategorie: 'gefuehrt', geraet: 'Cable', komplex: false,
     primaer: ['brust-mitte'], sekundaer: ['brust-unten', 'brust-oben', 'schulter-vorne'],
-    beschreibung: 'Bring the handles together in front of your body. Pulley height shifts the focus: high-to-low = lower chest, low-to-high = upper chest, horizontal = mid chest.'
+    beschreibung: 'Bring the handles together in front of your body. Pulley height shifts the focus: high-to-low = lower chest, low-to-high = upper chest, horizontal = mid chest.',
+    variationen: {
+      parameter: [
+        { id: 'hoehe', name: 'Pulley height', werte: [
+          { id: 'hoch', name: 'High (pulling down)' },
+          { id: 'mitte', name: 'Chest height' },
+          { id: 'tief', name: 'Low (pulling up)' }
+        ]}
+      ],
+      beanspruchung: {
+        'hoch':  { 'brust-unten': 88, 'brust-mitte': 60, 'schulter-vorne': 25, trizeps: 20 },
+        'mitte': { 'brust-mitte': 88, 'brust-oben': 45, 'brust-unten': 45, 'schulter-vorne': 30 },
+        'tief':  { 'brust-oben': 85, 'brust-mitte': 55, 'schulter-vorne': 42 }
+      },
+      erklaerung: {
+        'hoch':  'Hands meeting below the sternum: the lower chest shortens the most — the classic crossover.',
+        'mitte': 'The most even variant: the whole pectoralis works, with no part clearly leading.',
+        'tief':  'Sweeping up to chin height loads the clavicular (upper) chest — the front delts help noticeably.'
+      }
+    }
   },
   {
     id: 'brustpresse-maschine', name: 'Chest Press Machine', nameDe: 'Brustpresse',
@@ -209,6 +228,31 @@ const UEBUNGEN = [
     kategorie: 'frei', geraet: 'Dumbbell', komplex: false,
     primaer: ['brust-mitte'], sekundaer: ['lat', 'trizeps'],
     beschreibung: 'Lying across a bench, lower one dumbbell behind your head with almost straight arms and pull it back over — stretches chest and lats.'
+  },
+
+  {
+    id: 'schraegbank-kh', name: 'Incline Dumbbell Press', nameDe: 'Schrägbankdrücken mit Kurzhanteln',
+    kategorie: 'frei', geraet: 'Dumbbell', komplex: true,
+    primaer: ['brust-oben'], sekundaer: ['schulter-vorne', 'trizeps'],
+    beschreibung: 'Bench set to about 30–45°. Press the dumbbells up and slightly together — the free path lets you go deeper than with a barbell and hits the clavicular chest hard.'
+  },
+  {
+    id: 'schraege-fliegende-kh', name: 'Incline Dumbbell Fly', nameDe: 'Schrägbank-Fliegende',
+    kategorie: 'frei', geraet: 'Dumbbell', komplex: false,
+    primaer: ['brust-oben'], sekundaer: ['schulter-vorne'],
+    beschreibung: 'On a 30° incline, open your arms wide with a slight elbow bend and hug them back together — isolation for the upper chest.'
+  },
+  {
+    id: 'kabelzug-tief-hoch', name: 'Low-to-High Cable Fly', nameDe: 'Kabelzug von unten nach oben',
+    kategorie: 'gefuehrt', geraet: 'Cable', komplex: false,
+    primaer: ['brust-oben'], sekundaer: ['schulter-vorne'],
+    beschreibung: 'Pulleys at the bottom, arms sweeping up and inwards to chin height — constant tension on the upper chest through the whole range.'
+  },
+  {
+    id: 'liegestuetze-fuesse-hoch', name: 'Feet-Elevated Push-up', nameDe: 'Liegestütze mit erhöhten Füßen',
+    kategorie: 'frei', geraet: 'Bodyweight', komplex: true,
+    primaer: ['brust-oben'], sekundaer: ['schulter-vorne', 'trizeps'],
+    beschreibung: 'Push-up with your feet on a bench or box. The steeper the angle, the more the upper chest and front delts take over.'
   },
 
   /* ================= BACK ================= */
@@ -342,6 +386,31 @@ const UEBUNGEN = [
     beschreibung: 'A guided pullover arc — trains the lats through a huge range of motion with no balancing act.'
   },
 
+  {
+    id: 'rudern-pendlay', name: 'Pendlay Row', nameDe: 'Pendlay-Rudern',
+    kategorie: 'frei', geraet: 'Barbell', komplex: true,
+    primaer: ['ruecken-oben', 'lat'], sekundaer: ['ruecken-unten', 'bizeps'],
+    beschreibung: 'Torso parallel to the floor, the bar resting on the ground between reps. Every rep starts from a dead stop — explosive and strict, with no swing.'
+  },
+  {
+    id: 'rudern-inverse', name: 'Inverted Row', nameDe: 'Umgekehrtes Rudern',
+    kategorie: 'frei', geraet: 'Bodyweight', komplex: true,
+    primaer: ['ruecken-oben', 'lat'], sekundaer: ['bizeps', 'schulter-hinten'],
+    beschreibung: 'Hang under a bar with your body straight and pull your chest to it. Raise or lower the bar to adjust the difficulty — the beginner-friendly way into rowing.'
+  },
+  {
+    id: 'rack-pulls', name: 'Rack Pull', nameDe: 'Rack Pulls',
+    kategorie: 'frei', geraet: 'Barbell', komplex: true,
+    primaer: ['ruecken-oben', 'ruecken-unten'], sekundaer: ['lat', 'unterarme', 'gesaess'],
+    beschreibung: 'Deadlift from knee height out of the rack. The short range lets you handle heavy loads for the upper back and grip while sparing the lower back.'
+  },
+  {
+    id: 'reverse-hyperextensions', name: 'Reverse Hyperextension', nameDe: 'Reverse Hyperextensions',
+    kategorie: 'gefuehrt', geraet: 'Machine', komplex: false,
+    primaer: ['ruecken-unten', 'gesaess'], sekundaer: ['beinbeuger'],
+    beschreibung: 'Upper body fixed, legs swinging up from below. Trains the back extensors and glutes with almost no compression on the spine.'
+  },
+
   /* ================= NECK / TRAPS ================= */
   {
     id: 'shrugs-lh', name: 'Barbell Shrug', nameDe: 'Shrugs',
@@ -384,6 +453,13 @@ const UEBUNGEN = [
     kategorie: 'gefuehrt', geraet: 'Cable', komplex: false,
     primaer: ['schulter-hinten'], sekundaer: ['ruecken-oben', 'nacken'],
     beschreibung: 'Pull the rope toward your face at eye level, driving the elbows wide and back — a must-do for healthy shoulders and upright posture.'
+  },
+
+  {
+    id: 'shrugs-maschine', name: 'Machine Shrug', nameDe: 'Nackenziehen an der Maschine',
+    kategorie: 'gefuehrt', geraet: 'Machine', komplex: false,
+    primaer: ['nacken'], sekundaer: ['unterarme'],
+    beschreibung: 'Shrugs on a guided machine — the fixed path lets you focus on the squeeze at the top instead of on balancing the weight.'
   },
 
   /* ================= SHOULDERS ================= */
@@ -433,7 +509,36 @@ const UEBUNGEN = [
     id: 'seitheben', name: 'Lateral Raise', nameDe: 'Seitheben',
     kategorie: 'frei', geraet: 'Dumbbell', komplex: false,
     primaer: ['schulter-seite'], sekundaer: ['nacken', 'schulter-vorne'],
-    beschreibung: 'Raise slightly bent arms out to shoulder height, thumbs tilted a touch down — THE exercise for shoulder width.'
+    beschreibung: 'Raise slightly bent arms out to shoulder height, thumbs tilted a touch down — THE exercise for shoulder width.',
+    variationen: {
+      parameter: [
+        { id: 'hand', name: 'Hand position', werte: [
+          { id: 'neutral', name: 'Neutral (thumb forward)' },
+          { id: 'runter', name: 'Thumb down (pouring)' },
+          { id: 'hoch', name: 'Thumb up' }
+        ]},
+        { id: 'rumpf', name: 'Torso', werte: [
+          { id: 'aufrecht', name: 'Upright' },
+          { id: 'vorgebeugt', name: 'Bent forward' }
+        ]}
+      ],
+      beanspruchung: {
+        'neutral|aufrecht':   { 'schulter-seite': 85, 'schulter-vorne': 30, nacken: 28 },
+        'neutral|vorgebeugt': { 'schulter-seite': 68, 'schulter-hinten': 60, 'ruecken-oben': 38 },
+        'runter|aufrecht':    { 'schulter-seite': 90, 'schulter-hinten': 30, nacken: 25 },
+        'runter|vorgebeugt':  { 'schulter-seite': 70, 'schulter-hinten': 65, 'ruecken-oben': 40 },
+        'hoch|aufrecht':      { 'schulter-seite': 75, 'schulter-vorne': 45, nacken: 30 },
+        'hoch|vorgebeugt':    { 'schulter-seite': 62, 'schulter-hinten': 55, 'ruecken-oben': 35 }
+      },
+      erklaerung: {
+        'neutral|aufrecht':   'The safe default: side delt clearly in front, shoulder joint in a neutral position.',
+        'neutral|vorgebeugt': 'Leaning forward turns the raise into a rear-delt movement — the upper back joins in.',
+        'runter|aufrecht':    'Maximum side-delt tension. Some shoulders find this internally rotated position irritating — back off if it pinches.',
+        'runter|vorgebeugt':  'Strongest rear-delt version of the raise; the side delt still works hard.',
+        'hoch|aufrecht':      'Thumbs up shifts part of the load to the front delt — easier on the shoulder, less side-delt focus.',
+        'hoch|vorgebeugt':    'Gentle mix: rear and side delt share the work, load stays moderate.'
+      }
+    }
   },
   {
     id: 'seitheben-kabel', name: 'Cable Lateral Raise', nameDe: 'Seitheben am Kabel',
@@ -476,6 +581,31 @@ const UEBUNGEN = [
     kategorie: 'frei', geraet: 'Barbell', komplex: true,
     primaer: ['schulter-vorne'], sekundaer: ['brust-oben', 'trizeps', 'bauch'],
     beschreibung: 'Press one end of the bar up and forward (other end anchored on the floor) — a shoulder-friendly angle between bench and overhead pressing.'
+  },
+
+  {
+    id: 'arnold-press', name: 'Arnold Press', nameDe: 'Arnold-Drücken',
+    kategorie: 'frei', geraet: 'Dumbbell', komplex: true,
+    primaer: ['schulter-vorne', 'schulter-seite'], sekundaer: ['trizeps', 'nacken'],
+    beschreibung: 'Start with palms facing you, rotate the dumbbells outwards as you press overhead. The rotation adds range and brings the side delts in far more than a plain press.'
+  },
+  {
+    id: 'reverse-flys-kabel', name: 'Cable Reverse Fly', nameDe: 'Reverse Flys am Kabel',
+    kategorie: 'gefuehrt', geraet: 'Cable', komplex: false,
+    primaer: ['schulter-hinten'], sekundaer: ['ruecken-oben'],
+    beschreibung: 'Cross the cables in front of you and pull them apart in a wide arc. Unlike dumbbells the tension stays on the rear delts even at the start of the rep.'
+  },
+  {
+    id: 'reverse-flys-schraegbank', name: 'Prone Incline Reverse Fly', nameDe: 'Reverse Flys auf der Schrägbank',
+    kategorie: 'frei', geraet: 'Dumbbell', komplex: false,
+    primaer: ['schulter-hinten'], sekundaer: ['ruecken-oben'],
+    beschreibung: 'Lie chest-down on an incline bench and raise the dumbbells out to the sides. The bench kills the swing, so the rear delts do all the work.'
+  },
+  {
+    id: 'pike-liegestuetze', name: 'Pike Push-up', nameDe: 'Pike-Liegestütze',
+    kategorie: 'frei', geraet: 'Bodyweight', komplex: true,
+    primaer: ['schulter-vorne'], sekundaer: ['trizeps', 'schulter-seite'],
+    beschreibung: 'Hips high in an upside-down V, lower the crown of your head towards the floor — the bodyweight route to overhead pressing.'
   },
 
   /* ================= BICEPS ================= */
@@ -557,6 +687,19 @@ const UEBUNGEN = [
     beschreibung: 'Curl up with an underhand grip, rotate to overhand at the top and lower slowly — biceps on the way up, forearms on the way down.'
   },
 
+  {
+    id: 'konzentrationscurls', name: 'Concentration Curl', nameDe: 'Konzentrationscurls',
+    kategorie: 'frei', geraet: 'Dumbbell', komplex: false,
+    primaer: ['bizeps'], sekundaer: ['unterarme'],
+    beschreibung: 'Seated, elbow braced against the inner thigh. The arm cannot move, so nothing helps the biceps — the classic peak-contraction exercise.'
+  },
+  {
+    id: 'spider-curls', name: 'Spider Curl', nameDe: 'Spider Curls',
+    kategorie: 'frei', geraet: 'Dumbbell', komplex: false,
+    primaer: ['bizeps'], sekundaer: [],
+    beschreibung: 'Chest against a steep incline bench, arms hanging straight down. The shoulder is out of the movement entirely and the tension peaks at the top.'
+  },
+
   /* ================= TRICEPS ================= */
   {
     id: 'trizepsdruecken-kabel', name: 'Triceps Pushdown', nameDe: 'Trizepsdrücken am Kabel',
@@ -629,6 +772,19 @@ const UEBUNGEN = [
     kategorie: 'frei', geraet: 'Bodyweight', komplex: true,
     primaer: ['trizeps'], sekundaer: ['brust-mitte', 'schulter-vorne', 'bauch'],
     beschreibung: 'Push-ups with hands close together (thumbs and index fingers forming a diamond) — the no-equipment triceps variation.'
+  },
+
+  {
+    id: 'bankdips-bank', name: 'Bench Dip', nameDe: 'Bankdips',
+    kategorie: 'frei', geraet: 'Bodyweight', komplex: true,
+    primaer: ['trizeps'], sekundaer: ['schulter-vorne', 'brust-unten'],
+    beschreibung: 'Hands behind you on a bench, legs out front, lower and press back up. Easy to load by putting a plate on your lap — but hard on the shoulders if you go too deep.'
+  },
+  {
+    id: 'ueberkopf-trizeps-seil', name: 'Overhead Rope Extension', nameDe: 'Überkopf-Trizepsdrücken am Seil',
+    kategorie: 'gefuehrt', geraet: 'Cable', komplex: false,
+    primaer: ['trizeps'], sekundaer: [],
+    beschreibung: 'Facing away from a low pulley, rope behind your head, extend your arms forward and up. The overhead position stretches the long head under load.'
   },
 
   /* ================= FOREARMS ================= */
@@ -731,6 +887,25 @@ const UEBUNGEN = [
     beschreibung: 'From a push-up position, drive the knees to the chest in quick alternation — core work and cardio in one.'
   },
 
+  {
+    id: 'pallof-press', name: 'Pallof Press', nameDe: 'Pallof Press',
+    kategorie: 'gefuehrt', geraet: 'Cable', komplex: false,
+    primaer: ['bauch-seitlich'], sekundaer: ['bauch', 'gesaess'],
+    beschreibung: 'Stand side-on to a cable and press the handle straight out from your chest. The cable wants to rotate you — the obliques work by refusing to let it.'
+  },
+  {
+    id: 'fahrrad-crunch', name: 'Bicycle Crunch', nameDe: 'Fahrrad-Crunch',
+    kategorie: 'frei', geraet: 'Bodyweight', komplex: false,
+    primaer: ['bauch-seitlich', 'bauch'], sekundaer: [],
+    beschreibung: 'Alternate elbow to opposite knee while the other leg extends. Slow beats fast here — the rotation is what trains the obliques.'
+  },
+  {
+    id: 'seitbeugen-kh', name: 'Dumbbell Side Bend', nameDe: 'Seitbeugen mit Kurzhantel',
+    kategorie: 'frei', geraet: 'Dumbbell', komplex: false,
+    primaer: ['bauch-seitlich'], sekundaer: ['ruecken-unten'],
+    beschreibung: 'One dumbbell in one hand, bend sideways and come back up under control. Keep the load moderate — heavy side bends thicken the waist more than they define it.'
+  },
+
   /* ================= GLUTES ================= */
   {
     id: 'hip-thrust', name: 'Barbell Hip Thrust', nameDe: 'Hip Thrust',
@@ -760,7 +935,36 @@ const UEBUNGEN = [
     id: 'ausfallschritte', name: 'Lunges', nameDe: 'Ausfallschritte',
     kategorie: 'frei', geraet: 'Dumbbell', komplex: true,
     primaer: ['quadrizeps', 'gesaess'], sekundaer: ['beinbeuger', 'adduktoren', 'waden'],
-    beschreibung: 'Big step forward, lower the back knee toward the floor, push back up — longer steps hit more glutes, shorter steps more quads.'
+    beschreibung: 'Big step forward, lower the back knee toward the floor, push back up — longer steps hit more glutes, shorter steps more quads.',
+    variationen: {
+      parameter: [
+        { id: 'richtung', name: 'Direction', werte: [
+          { id: 'vorwaerts', name: 'Forward' },
+          { id: 'rueckwaerts', name: 'Reverse' },
+          { id: 'gehend', name: 'Walking' }
+        ]},
+        { id: 'schritt', name: 'Step length', werte: [
+          { id: 'kurz', name: 'Short' },
+          { id: 'lang', name: 'Long' }
+        ]}
+      ],
+      beanspruchung: {
+        'vorwaerts|kurz':   { quadrizeps: 90, gesaess: 45, waden: 25 },
+        'vorwaerts|lang':   { quadrizeps: 70, gesaess: 70, beinbeuger: 40 },
+        'rueckwaerts|kurz': { quadrizeps: 78, gesaess: 60, beinbeuger: 30 },
+        'rueckwaerts|lang': { quadrizeps: 58, gesaess: 82, beinbeuger: 50 },
+        'gehend|kurz':      { quadrizeps: 82, gesaess: 55, waden: 30, bauch: 25 },
+        'gehend|lang':      { quadrizeps: 65, gesaess: 78, beinbeuger: 45, bauch: 28 }
+      },
+      erklaerung: {
+        'vorwaerts|kurz':   'Short step, upright torso: the front knee travels far forward — the most quad-dominant lunge.',
+        'vorwaerts|lang':   'The long step turns it into a hip movement: glutes and hamstrings take over.',
+        'rueckwaerts|kurz': 'Stepping back is gentler on the knee than stepping forward, at similar quad involvement.',
+        'rueckwaerts|lang': 'The most glute-heavy variant — and the friendliest one for cranky knees.',
+        'gehend|kurz':      'Walking adds a balance demand: the core stabilises every step.',
+        'gehend|lang':      'Long walking lunges: glute-dominant with a constant balance challenge — tiring in a good way.'
+      }
+    }
   },
   {
     id: 'bulgarian-split-squat', name: 'Bulgarian Split Squat', nameDe: 'Bulgarische Kniebeuge',
@@ -773,6 +977,13 @@ const UEBUNGEN = [
     kategorie: 'frei', geraet: 'Dumbbell', komplex: true,
     primaer: ['quadrizeps', 'gesaess'], sekundaer: ['beinbeuger', 'waden'],
     beschreibung: 'Step onto a knee-high platform and step down under control — the higher the box, the more glute involvement.'
+  },
+
+  {
+    id: 'kettlebell-swing', name: 'Kettlebell Swing', nameDe: 'Kettlebell-Swing',
+    kategorie: 'frei', geraet: 'Kettlebell', komplex: true,
+    primaer: ['gesaess', 'beinbeuger'], sekundaer: ['ruecken-unten', 'bauch'],
+    beschreibung: 'A hip hinge, not a squat: snap the hips forward and let the bell float to chest height. Power comes from the glutes, never from the arms.'
   },
 
   /* ================= THIGHS ================= */
@@ -822,7 +1033,36 @@ const UEBUNGEN = [
     id: 'beinpresse', name: 'Leg Press', nameDe: 'Beinpresse',
     kategorie: 'gefuehrt', geraet: 'Machine', komplex: true,
     primaer: ['quadrizeps', 'gesaess'], sekundaer: ['beinbeuger', 'adduktoren'],
-    beschreibung: 'Lower the sled under control and press away, lower back staying on the pad. Feet low = more quads, feet high = more glutes/hamstrings.'
+    beschreibung: 'Lower the sled under control and press away, lower back staying on the pad. Feet low = more quads, feet high = more glutes/hamstrings.',
+    variationen: {
+      parameter: [
+        { id: 'fuss', name: 'Foot position', werte: [
+          { id: 'tief', name: 'Low on the plate' },
+          { id: 'mitte', name: 'Middle' },
+          { id: 'hoch', name: 'High on the plate' }
+        ]},
+        { id: 'stand', name: 'Stance', werte: [
+          { id: 'eng', name: 'Narrow' },
+          { id: 'breit', name: 'Wide' }
+        ]}
+      ],
+      beanspruchung: {
+        'tief|eng':   { quadrizeps: 92, gesaess: 35, waden: 22 },
+        'tief|breit': { quadrizeps: 85, gesaess: 45, adduktoren: 40 },
+        'mitte|eng':  { quadrizeps: 85, gesaess: 50, beinbeuger: 25 },
+        'mitte|breit':{ quadrizeps: 75, gesaess: 60, adduktoren: 45, beinbeuger: 30 },
+        'hoch|eng':   { quadrizeps: 65, gesaess: 70, beinbeuger: 45 },
+        'hoch|breit': { quadrizeps: 55, gesaess: 80, beinbeuger: 50, adduktoren: 45 }
+      },
+      erklaerung: {
+        'tief|eng':   'Feet low and close: the knee bends the most — the strongest quad emphasis on this machine.',
+        'tief|breit': 'Still quad-led, but the wide stance pulls the inner thighs into the work.',
+        'mitte|eng':  'The neutral default: quads lead, glutes assist, joints stay in a comfortable range.',
+        'mitte|breit':'Balanced across the whole leg — a good all-round setting.',
+        'hoch|eng':   'Feet high means more hip and less knee: glutes and hamstrings take over.',
+        'hoch|breit': 'The most posterior-chain version — watch that your lower back stays flat on the pad.'
+      }
+    }
   },
   {
     id: 'hackenschmidt', name: 'Hack Squat', nameDe: 'Hackenschmidt-Kniebeuge',
@@ -871,6 +1111,37 @@ const UEBUNGEN = [
     kategorie: 'frei', geraet: 'Bodyweight', komplex: false,
     primaer: ['quadrizeps'], sekundaer: ['gesaess'],
     beschreibung: 'Hold a 90° seat against the wall — a static quad burner you can do anywhere.'
+  },
+
+  {
+    id: 'nordic-curls', name: 'Nordic Hamstring Curl', nameDe: 'Nordic Curls',
+    kategorie: 'frei', geraet: 'Bodyweight', komplex: false,
+    primaer: ['beinbeuger'], sekundaer: ['gesaess'],
+    beschreibung: 'Kneel with your ankles anchored and lower your straight body forward as slowly as you can. Brutally hard — and one of the best-studied ways to protect the hamstrings.'
+  },
+  {
+    id: 'kreuzheben-einbeinig', name: 'Single-Leg Romanian Deadlift', nameDe: 'Einbeiniges Kreuzheben',
+    kategorie: 'frei', geraet: 'Dumbbell', komplex: true,
+    primaer: ['beinbeuger', 'gesaess'], sekundaer: ['ruecken-unten', 'bauch'],
+    beschreibung: 'Hinge over one leg while the other extends behind you. Balance forces the glute to stabilise as well as extend — great against left/right imbalances.'
+  },
+  {
+    id: 'beinbeuger-stehend', name: 'Standing Leg Curl', nameDe: 'Beinbeuger stehend',
+    kategorie: 'gefuehrt', geraet: 'Machine', komplex: false,
+    primaer: ['beinbeuger'], sekundaer: ['waden'],
+    beschreibung: 'One leg at a time against the pad. With the hip extended the emphasis differs from the seated version — worth having both in the plan.'
+  },
+  {
+    id: 'kossacken-kniebeuge', name: 'Cossack Squat', nameDe: 'Kosakenkniebeuge',
+    kategorie: 'frei', geraet: 'Bodyweight', komplex: true,
+    primaer: ['adduktoren', 'quadrizeps'], sekundaer: ['gesaess', 'beinbeuger'],
+    beschreibung: 'Wide stance, sink onto one leg while the other stays straight. Loads the inner thigh through a deep stretch and opens the hips.'
+  },
+  {
+    id: 'seitausfallschritt', name: 'Lateral Lunge', nameDe: 'Seitlicher Ausfallschritt',
+    kategorie: 'frei', geraet: 'Dumbbell', komplex: true,
+    primaer: ['adduktoren', 'gesaess'], sekundaer: ['quadrizeps'],
+    beschreibung: 'Step out to the side and sit back into that hip while the trailing leg stays straight. Trains the frontal plane that squats and lunges leave out.'
   },
 
   /* ================= CALVES ================= */

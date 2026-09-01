@@ -72,6 +72,7 @@ const Uebungen = {
         gruppe.regionen.map(r =>
           `<button class="chip klein ${this.regionFokus === r ? 'aktiv' : ''}" data-region="${r}">${regionKurz(r)}</button>`
         ).join('');
+      regionChips.classList.add('chip-strip');
       regionChips.querySelectorAll('button').forEach(btn => {
         btn.addEventListener('click', () => {
           this.waehleGruppe(gruppe.id, btn.getAttribute('data-region') || null);
@@ -83,14 +84,20 @@ const Uebungen = {
 
     // Filter chips
     const filter = document.getElementById('filterChips');
+    filter.className = 'filter-bereich';
+    const chip = (f, wert, aktiv, label) =>
+      `<button class="chip klein ${aktiv === wert ? 'aktiv' : ''}" data-f="${f}" data-w="${wert}">${label}</button>`;
     filter.innerHTML =
-      `<button class="chip ${this.filterEquip === 'alle' ? 'aktiv' : ''}" data-f="equip" data-w="alle">All equipment</button>` +
-      `<button class="chip ${this.filterEquip === 'frei' ? 'aktiv' : ''}" data-f="equip" data-w="frei">🏋 Free weights</button>` +
-      `<button class="chip ${this.filterEquip === 'gefuehrt' ? 'aktiv' : ''}" data-f="equip" data-w="gefuehrt">⚙ Machine / cable</button>` +
-      `<span style="flex-basis:100%"></span>` +
-      `<button class="chip ${this.filterArt === 'alle' ? 'aktiv' : ''}" data-f="art" data-w="alle">All types</button>` +
-      `<button class="chip ${this.filterArt === 'komplex' ? 'aktiv' : ''}" data-f="art" data-w="komplex">Compound (multi-joint)</button>` +
-      `<button class="chip ${this.filterArt === 'isoliert' ? 'aktiv' : ''}" data-f="art" data-w="isoliert">Isolation (targeted)</button>`;
+      `<div class="chip-strip">` +
+      chip('equip', 'alle', this.filterEquip, 'All equipment') +
+      chip('equip', 'frei', this.filterEquip, '🏋 Free weights') +
+      chip('equip', 'gefuehrt', this.filterEquip, '⚙ Machine / cable') +
+      `</div>` +
+      `<div class="chip-strip">` +
+      chip('art', 'alle', this.filterArt, 'All types') +
+      chip('art', 'komplex', this.filterArt, 'Compound') +
+      chip('art', 'isoliert', this.filterArt, 'Isolation') +
+      `</div>`;
     filter.querySelectorAll('button').forEach(btn => {
       btn.addEventListener('click', () => {
         if (btn.getAttribute('data-f') === 'equip') this.filterEquip = btn.getAttribute('data-w');
@@ -207,6 +214,8 @@ const Uebungen = {
         `<div class="heat-balken" id="detailBalken"></div>` +
         `</div></div>`;
     }
+
+    html += Historie.uebungFortschrittHtml(u.id);
 
     html += `<div class="btn-zeile">` +
       `<button class="btn primaer breit" id="detailPlus">＋ Add to workout</button>` +

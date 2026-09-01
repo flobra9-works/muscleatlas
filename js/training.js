@@ -2,7 +2,8 @@
    heart rate display, calories, Spotify player */
 
 const Training = {
-  aktiv: null,            // { workoutId, uebungIndex, satzNummer, gestartet, fertigeSaetze, pausenEnde, pausenDauer }
+  aktiv: null,            // { workoutId, uebungIndex, satzNummer, gestartet, fertigeSaetze,
+                          //   pausenEnde, pausenDauer, saetze: [logged], werte: [per exercise] }
   zusammenfassung: null,
   intervall: null,
   audioCtx: null,
@@ -100,11 +101,7 @@ const Training = {
       `<div class="uebung-titel">${u.name}</div>` +
       `<div class="satz-info">Set <b>${a.satzNummer}</b> of ${eintrag.saetze}</div>` +
       `</div>` +
-      `<div class="soll-werte">` +
-      `<div class="soll"><b>${eintrag.wdh}</b><span>Reps</span></div>` +
-      (eintrag.gewicht > 0 ? `<div class="soll"><b>${eintrag.gewicht}</b><span>kg</span></div>` : '') +
-      `<div class="soll"><b>${eintrag.pause}</b><span>Rest s</span></div>` +
-      `</div>`;
+      this.logZeileHtml(eintrag, u);
 
     if (a.pausenEnde) {
       const umfang = 2 * Math.PI * 84;
@@ -138,6 +135,35 @@ const Training = {
     return html;
   },
 
+  /* Editable "what am I actually lifting" row. Pre-filled from the last session,
+     falling back to the planned values. */
+  logZeileHtml(eintrag, u) {
+    const werte = this.aktiv.werte[this.aktiv.uebungIndex];
+    const koerpergewicht = u.geraet === 'Bodyweight';
+    const schritt = koerpergewicht ? 1.25 : 2.5;
+    const stepper = (feld, label, wert, delta, min, step) =>
+      `<div class="log-feld"><span class="log-label">${label}</span>` +
+      `<div class="stepper">` +
+      `<button class="step-btn" data-log="${feld}" data-delta="${-delta}" aria-label="less">−</button>` +
+      `<input type="number" class="step-wert" data-log-feld="${feld}" value="${wert}" ` +
+      `min="${min}" step="${step}" inputmode="${step < 1 ? 'decimal' : 'numeric'}">` +
+      `<button class="step-btn" data-log="${feld}" data-delta="${delta}" aria-label="more">+</button>` +
+      `</div></div>`;
+
+    const letzte = Speicher.letzteWerte(eintrag.uebungId);
+    let hinweis = `Plan: ${eintrag.saetze} × ${eintrag.wdh}` +
+      (eintrag.gewicht > 0 ? ` × ${eintrag.gewicht} kg` : '') +
+      (eintrag.pause ? ` · ${eintrag.pause} s rest` : '');
+    if (letzte) {
+      hinweis += ` · last time: ${letzte.wdh} × ${letzte.gewicht > 0 ? letzte.gewicht + ' kg' : 'bodyweight'}`;
+    }
+
+    return `<div class="log-zeile">` +
+      stepper('gewicht', koerpergewicht ? 'Added kg' : 'Weight kg', werte.gewicht, schritt, 0, 0.5) +
+      stepper('wdh', 'Reps', werte.wdh, 1, 0, 1) +
+      `</div><div class="hinweis-klein log-hinweis">${hinweis}</div>`;
+  },
+
   pulsZeileHtml() {
     if (!Puls.verbunden) return `<span class="hinweis-klein">No heart-rate device connected</span><span class="hinweis-klein" id="tKcal"></span>`;
     const zone = Puls.zone(Puls.bpm, Speicher.daten.profil.alter);
@@ -156,8 +182,14 @@ const Training = {
       `<div class="soll-werte" style="margin-top:16px;">` +
       `<div class="soll"><b>${min}:${String(sek).padStart(2, '0')}</b><span>Duration</span></div>` +
       `<div class="soll"><b>${z.fertigeSaetze}/${z.gesamtSaetze}</b><span>Sets</span></div>` +
+      (z.volumen ? `<div class="soll"><b>${Historie.volumenKurz(z.volumen)}</b><span>Volume</span></div>` : '') +
       (z.kcal ? `<div class="soll"><b>≈${z.kcal}</b><span>kcal</span></div>` : '') +
       `</div>` +
+      (z.rekorde && z.rekorde.length
+        ? `<div class="rekord-box">🏆 <b>New personal best</b>` +
+          z.rekorde.map(r => `<div class="rekord-zeile">${App.escapeHtml(r.name)} — ${r.wdh} × ${r.gewicht} kg</div>`).join('') +
+          `</div>`
+        : '') +
       (z.oPuls ? `<div class="soll-werte">` +
         `<div class="soll"><b>${z.oPuls}</b><span>Avg HR</span></div>` +
         `<div class="soll"><b>${z.maxPuls}</b><span>Max HR</span></div>` +
@@ -165,7 +197,10 @@ const Training = {
       (!z.kcal && !z.oPuls
         ? `<div class="hinweis-klein" style="margin-top:8px;">Tip: with a profile (settings) and/or a heart-rate strap you’ll see calorie and HR stats here.</div>`
         : `<div class="hinweis-klein" style="margin-top:8px;">Calories are an estimate${z.kcalQuelle === 'puls' ? ' based on your heart rate' : ' (no HR, MET formula)'}.</div>`) +
-      `<div class="btn-zeile"><button class="btn primaer breit" id="tFertig">Done</button></div>` +
+      `<div class="btn-zeile">` +
+      `<button class="btn primaer breit" id="tFertig">Done</button>` +
+      `<button class="btn" id="tZurHistorie">History</button>` +
+      `</div>` +
       `</div>`;
   },
 
@@ -187,6 +222,16 @@ const Training = {
     if (q('pulsTrennen')) q('pulsTrennen').addEventListener('click', () => { Puls.trennen(); this.renderHaupt(); });
 
     // Running session
+    document.querySelectorAll('#trainingHaupt [data-log]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        this.werteAendern(btn.getAttribute('data-log'), parseFloat(btn.getAttribute('data-delta')));
+      });
+    });
+    document.querySelectorAll('#trainingHaupt [data-log-feld]').forEach(inp => {
+      inp.addEventListener('change', () => {
+        this.werteSetzen(inp.getAttribute('data-log-feld'), parseFloat(inp.value));
+      });
+    });
     if (q('tSatzFertig')) q('tSatzFertig').addEventListener('click', () => this.satzFertig());
     if (q('tSkip')) q('tSkip').addEventListener('click', () => this.pauseVorbei(true));
     if (q('tPlus15')) q('tPlus15').addEventListener('click', () => this.pauseAnpassen(15));
@@ -199,6 +244,11 @@ const Training = {
 
     // Summary
     if (q('tFertig')) q('tFertig').addEventListener('click', () => { this.zusammenfassung = null; this.renderHaupt(); });
+    if (q('tZurHistorie')) q('tZurHistorie').addEventListener('click', () => {
+      this.zusammenfassung = null;
+      this.renderHaupt();
+      App.zeigeTab('historie');
+    });
   },
 
   koppelePuls() {
@@ -228,7 +278,16 @@ const Training = {
     this.aktiv = {
       workoutId, uebungIndex: 0, satzNummer: 1,
       gestartet: Date.now(), fertigeSaetze: 0,
-      pausenEnde: null, pausenDauer: 0
+      pausenEnde: null, pausenDauer: 0,
+      saetze: [],
+      // Start from what was actually lifted last time, not from the plan —
+      // that is what makes the numbers creep up over weeks.
+      werte: w.uebungen.map(e => {
+        const letzte = Speicher.letzteWerte(e.uebungId);
+        return letzte
+          ? { wdh: letzte.wdh, gewicht: letzte.gewicht }
+          : { wdh: e.wdh, gewicht: e.gewicht };
+      })
     };
     this._initAudio();
     this._wakeLockAn();
@@ -239,10 +298,32 @@ const Training = {
     this.renderHaupt();
   },
 
+  werteAendern(feld, delta) {
+    const werte = this.aktiv && this.aktiv.werte[this.aktiv.uebungIndex];
+    if (!werte) return;
+    this.werteSetzen(feld, (werte[feld] || 0) + delta);
+  },
+
+  werteSetzen(feld, wert) {
+    const werte = this.aktiv && this.aktiv.werte[this.aktiv.uebungIndex];
+    if (!werte || isNaN(wert)) return;
+    werte[feld] = feld === 'wdh'
+      ? Math.max(0, Math.round(wert))
+      : Math.max(0, Math.round(wert * 4) / 4);   // quarter-kilo steps
+    this.renderHaupt();
+  },
+
   satzFertig() {
     const a = this.aktiv;
     const w = Speicher.workoutVonId(a.workoutId);
     const eintrag = w.uebungen[a.uebungIndex];
+    const werte = a.werte[a.uebungIndex];
+    a.saetze.push({
+      uebungId: eintrag.uebungId,
+      satz: a.satzNummer,
+      wdh: werte.wdh,
+      gewicht: werte.gewicht
+    });
     a.fertigeSaetze++;
     this.vibriere([60]);
 
@@ -322,7 +403,37 @@ const Training = {
     let kcalQuelle = 'puls';
     if (!kcal) { kcal = Puls.kalorienMET(dauerMs / 60000, profil.gewicht); kcalQuelle = 'met'; }
 
-    this.zusammenfassung = { dauerMs, fertigeSaetze: a.fertigeSaetze, gesamtSaetze, oPuls, maxPuls, kcal, kcalQuelle };
+    // Personal records have to be judged against the history *before* this
+    // session is written into it.
+    const rekorde = [];
+    [...new Set(a.saetze.map(s => s.uebungId))].forEach(uid => {
+      const vorher = Speicher.besterSatz(uid);
+      const heute = a.saetze
+        .filter(s => s.uebungId === uid && s.gewicht > 0)
+        .sort((x, y) => y.gewicht - x.gewicht || y.wdh - x.wdh)[0];
+      if (!heute) return;
+      if (!vorher || heute.gewicht > vorher.gewicht ||
+          (heute.gewicht === vorher.gewicht && heute.wdh > vorher.wdh)) {
+        const u = uebungVonId(uid);
+        rekorde.push({ name: u ? u.name : uid, gewicht: heute.gewicht, wdh: heute.wdh, neu: !vorher });
+      }
+    });
+
+    const volumen = a.saetze.reduce((s, x) => s + x.gewicht * x.wdh, 0);
+
+    if (a.saetze.length) {
+      Speicher.speichereSession({
+        workoutId: a.workoutId,
+        name: w.name,
+        start: a.gestartet,
+        dauerMs,
+        saetze: a.saetze,
+        geplanteSaetze: gesamtSaetze,
+        oPuls, maxPuls, kcal, kcalQuelle
+      });
+    }
+
+    this.zusammenfassung = { dauerMs, fertigeSaetze: a.fertigeSaetze, gesamtSaetze, oPuls, maxPuls, kcal, kcalQuelle, volumen, rekorde };
     this.aktiv = null;
     if (this.intervall) { clearInterval(this.intervall); this.intervall = null; }
     this._wakeLockAus();

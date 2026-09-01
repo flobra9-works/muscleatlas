@@ -155,6 +155,20 @@ main { max-width: 920px; margin: 0 auto; padding: 14px 14px 24px; }
 }
 
 .chip-zeile { display: flex; flex-wrap: wrap; gap: 7px; margin: 10px 0; }
+
+/* One-line, swipeable chip row — keeps filter rows from eating a phone screen. */
+.chip-strip {
+  display: flex; flex-wrap: nowrap; gap: 7px; margin: 8px 0;
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scrollbar-width: none; -ms-overflow-style: none;
+  padding-bottom: 1px;
+}
+.chip-strip::-webkit-scrollbar { display: none; }
+.filter-bereich { display: block; margin: 10px 0; }
+
+/* The header is sticky, so anything we scroll to needs to clear it. */
+#auswahlBereich { scroll-margin-top: 62px; }
+.chip-strip > .chip { flex: 0 0 auto; }
 .chip {
   padding: 7px 13px; border-radius: 999px; font-size: .84rem; font-weight: 700;
   background: var(--flaeche-2); border: 1px solid var(--rand); color: var(--text-gedimmt);
@@ -317,7 +331,7 @@ main { max-width: 920px; margin: 0 auto; padding: 14px 14px 24px; }
 }
 
 .heat-bereich { display: flex; gap: 12px; margin-top: 14px; align-items: flex-start; }
-.heat-koerper { flex: 0 0 128px; display: flex; gap: 4px; }
+.heat-koerper { flex: 0 0 172px; display: flex; gap: 5px; }
 .heat-koerper > div { flex: 1 1 0; min-width: 0; }
 .heat-koerper .muskel { pointer-events: none; cursor: default; }
 .heat-balken { flex: 1; min-width: 0; }
@@ -405,8 +419,9 @@ input[type=number] { -moz-appearance: textfield; }
 .uebung-eintrag .eintrag-kopf { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .uebung-eintrag .eintrag-name { font-weight: 800; font-size: .9rem; }
 .eintrag-werte { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin-top: 9px; }
+.eintrag-werte .feld { min-width: 0; }
 .eintrag-werte .feld label { font-size: .62rem; }
-.eintrag-werte .feld input { padding: 8px 6px; text-align: center; }
+.eintrag-werte .feld input { padding: 8px 4px; text-align: center; }
 .mini-btns { display: flex; gap: 4px; }
 .mini-btn {
   width: 30px; height: 30px; border-radius: 8px; font-size: .85rem;
@@ -427,7 +442,7 @@ input[type=number] { -moz-appearance: textfield; }
 .aktuelle-uebung { text-align: center; padding: 8px 0 4px; }
 .aktuelle-uebung .uebung-titel { font-size: 1.45rem; font-weight: 900; font-style: italic; transform: skewX(-4deg); }
 .aktuelle-uebung .satz-info { color: var(--text-gedimmt); margin-top: 3px; font-size: .95rem; }
-.soll-werte { display: flex; justify-content: center; gap: 22px; margin: 14px 0; }
+.soll-werte { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 22px; margin: 14px 0; }
 .soll-werte .soll { text-align: center; }
 .soll-werte .soll b { display: block; font-size: 1.5rem; font-variant-numeric: tabular-nums; font-weight: 900; }
 .soll-werte .soll span { font-size: .72rem; color: var(--text-gedimmt); text-transform: uppercase; letter-spacing: .1em; font-weight: 700; }
@@ -470,8 +485,14 @@ input[type=number] { -moz-appearance: textfield; }
   box-shadow: 0 6px 22px rgba(255, 45, 120, .2);
 }
 .geschlecht-wahl button .wahl-label { font-weight: 900; margin-top: 6px; display: block; font-style: italic; letter-spacing: .04em; }
-.geschlecht-wahl .koerper-svg { max-height: 260px; }
-.geschlecht-wahl .koerper-svg .muskel { pointer-events: none; }
+/* Sex choice without body figures — the artwork is male-only, so showing two
+   different bodies here would promise a switch the app cannot deliver. */
+.geschlecht-wahl.schlicht button { padding: 20px 10px 16px; }
+.geschlecht-wahl .wahl-zeichen {
+  display: block; font-size: 2.6rem; line-height: 1;
+  background: var(--verlauf); -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
 
 /* ---------- Toast ---------- */
 
@@ -500,7 +521,7 @@ input[type=number] { -moz-appearance: textfield; }
 
 @media (max-width: 480px) {
   main { padding: 10px 10px 20px; }
-  .heat-koerper { flex-basis: 104px; }
+  .heat-koerper { flex-basis: 140px; }
   .eintrag-werte { grid-template-columns: repeat(4, 1fr); }
   .gross-zahl { font-size: 1.6rem; }
 }
@@ -509,3 +530,187 @@ input[type=number] { -moz-appearance: textfield; }
   .koerper-svg .muskel.gewaehlt path, .koerper-svg .muskel.gewaehlt ellipse, .koerper-svg .muskel.gewaehlt rect { animation: none; }
   .puls-anzeige .herz { animation: none; }
 }
+
+/* ---------- Set logging (training) ---------- */
+
+.log-zeile {
+  display: flex; gap: 10px; justify-content: center; align-items: flex-end;
+  margin: 16px 0 4px; flex-wrap: wrap;
+}
+.log-feld { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.log-label {
+  font-size: .68rem; color: var(--text-gedimmt); text-transform: uppercase;
+  letter-spacing: .1em; font-weight: 800;
+}
+.stepper {
+  display: flex; align-items: stretch;
+  background: var(--flaeche-2); border: 1px solid var(--rand);
+  border-radius: var(--radius-klein); overflow: hidden;
+}
+.step-btn {
+  width: 38px; font-size: 1.35rem; font-weight: 800; color: var(--text-gedimmt);
+  background: var(--flaeche-3);
+}
+.step-btn:active { background: var(--rand-hell); color: var(--text); }
+.step-wert {
+  width: 66px; text-align: center; background: none; border: none; color: var(--text);
+  font-size: 1.3rem; font-weight: 900; font-variant-numeric: tabular-nums;
+  padding: 8px 0; -moz-appearance: textfield;
+}
+.step-wert::-webkit-outer-spin-button,
+.step-wert::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.step-wert:focus { outline: none; box-shadow: inset 0 -2px 0 var(--akzent); }
+.log-feld.statisch .log-fest {
+  padding: 9px 14px; border-radius: var(--radius-klein);
+  background: var(--flaeche-2); border: 1px solid var(--rand);
+  font-size: 1.3rem; font-weight: 900; font-variant-numeric: tabular-nums;
+  text-align: center; min-width: 62px;
+}
+.log-hinweis { text-align: center; margin-bottom: 4px; }
+
+.rekord-box {
+  margin: 14px 0 4px; padding: 12px 14px; border-radius: var(--radius-klein);
+  background: linear-gradient(135deg, rgba(255, 107, 44, .16), rgba(255, 45, 120, .16));
+  border: 1px solid rgba(255, 107, 44, .4); font-size: .92rem;
+}
+.rekord-zeile { color: var(--text-gedimmt); font-size: .86rem; margin-top: 3px; }
+
+/* ---------- History ---------- */
+
+.historie-karte {
+  display: block; width: 100%; text-align: left;
+  background: var(--flaeche-2); border: 1px solid var(--rand);
+  border-radius: var(--radius-klein); padding: 11px 13px; margin-bottom: 8px;
+}
+.historie-karte:active { border-color: var(--rand-hell); background: var(--flaeche-3); }
+.historie-kopf { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.historie-kopf b { font-weight: 800; }
+.historie-werte {
+  display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 5px;
+  font-size: .8rem; color: var(--text-gedimmt); font-variant-numeric: tabular-nums;
+}
+
+.wochen-chart { display: flex; align-items: flex-end; gap: 6px; height: 110px; margin-top: 6px; }
+.wochen-saeule { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; }
+.saeule-bahn {
+  flex: 1; width: 100%; display: flex; align-items: flex-end;
+  background: var(--flaeche-2); border-radius: 6px; overflow: hidden;
+}
+.saeule {
+  width: 100%; background: var(--verlauf-schraeg); border-radius: 6px;
+  min-height: 2px; box-shadow: 0 0 10px var(--glow);
+}
+.saeule-label {
+  font-size: .64rem; color: var(--text-gedimmt); margin-top: 5px;
+  font-weight: 700; letter-spacing: .04em;
+}
+
+.satz-block { margin-top: 14px; }
+.satz-block-titel { font-weight: 800; font-size: .95rem; margin-bottom: 6px; }
+.satz-liste { display: flex; flex-wrap: wrap; gap: 6px; }
+.satz-eintrag {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--flaeche-2); border: 1px solid var(--rand);
+  border-radius: 8px; padding: 5px 10px;
+  font-size: .86rem; font-variant-numeric: tabular-nums;
+}
+.satz-nr {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 5px;
+  background: var(--flaeche-3); color: var(--text-gedimmt);
+  font-size: .68rem; font-weight: 800;
+}
+
+.sparkline { margin: 4px 0 8px; }
+.sparkline svg { width: 100%; height: 64px; display: block; }
+.sparkline-achse {
+  display: flex; justify-content: space-between;
+  font-size: .68rem; color: var(--text-gedimmt); font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Body plates (rendered anatomy) ---------- */
+
+.koerperkarte {
+  display: block; position: relative;
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 8%, rgba(255, 70, 115, .10), transparent 65%),
+    radial-gradient(ellipse at 50% 20%, #1b2038 0%, #12152a 70%);
+  border: 1px solid var(--rand); border-radius: var(--radius);
+  padding: 10px; overflow: hidden;
+}
+/* dot grid, faded out towards the edges */
+.koerperkarte::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(rgba(154, 162, 199, .20) 1px, transparent 1px);
+  background-size: 18px 18px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 45%, #000 55%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 45%, #000 55%, transparent 100%);
+}
+
+.plate-kopf {
+  position: relative; z-index: 3;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.segmente.klein button { padding: 5px 14px; font-size: .78rem; }
+
+.plate-zoom { display: flex; gap: 5px; }
+.plate-zoom button {
+  width: 30px; height: 30px; border-radius: 9px;
+  background: var(--flaeche-2); border: 1px solid var(--rand); color: var(--text-gedimmt);
+  font-size: .95rem; font-weight: 800;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.plate-zoom button:active { background: var(--flaeche-3); color: var(--text); }
+
+.plate-buehne {
+  position: relative; z-index: 2;
+  display: flex; justify-content: center;
+  overflow: hidden; touch-action: pan-y;
+  margin-top: 8px;
+}
+
+.koerper-plate {
+  position: relative;
+  /* Height-driven: a 1:2.6 figure overflows any width-driven box on a phone. */
+  height: min(58vh, 520px);
+  aspect-ratio: 1029 / 2700;
+  width: auto; max-width: 100%;
+  transform-origin: center center;
+  transition: transform .12s ease-out;
+}
+.koerper-plate > * {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  display: block; pointer-events: none;
+}
+.plate-art {
+  object-fit: contain;
+  filter: drop-shadow(0 6px 24px rgba(0, 0, 0, .55));
+  user-select: none; -webkit-user-drag: none;
+}
+/* The tint canvas sits exactly over the art; screen blending keeps the muscle
+   fibre detail visible through the highlight instead of flooding it. */
+.plate-tint { mix-blend-mode: screen; opacity: .92; }
+.plate-marker { overflow: visible; }
+
+.plate-hotspot { pointer-events: auto; cursor: pointer; }
+.plate-hotspot .ring {
+  fill: rgba(12, 14, 26, .45); stroke: var(--akzent); stroke-width: 9;
+  filter: drop-shadow(0 0 10px var(--glow));
+}
+.plate-hotspot:active .ring { fill: rgba(255, 107, 44, .3); }
+.plate-hotspot .badge { fill: #2f6bff; stroke: #0c0e1a; stroke-width: 6; }
+.plate-hotspot .badge-text {
+  fill: #fff; font-size: 26px; font-weight: 800; text-anchor: middle;
+  font-family: system-ui, sans-serif;
+}
+
+/* Mini bodies in the exercise detail heatmap.
+   The full-size plate is sized by height (min(58vh,520px)); inside the detail
+   sheet it has to be sized by the column instead, so height goes back to auto
+   and aspect-ratio derives it. Without this reset the box keeps the 520px
+   height, the aspect ratio collapses and the tint floats off the body. */
+.heat-koerper .koerper-plate.mini {
+  height: auto; width: 100%; max-width: none; transform: none;
+}
+.heat-koerper .koerper-plate.mini .plate-art { filter: none; }
+.heat-koerper .koerper-plate.mini .plate-tint { opacity: 1; }

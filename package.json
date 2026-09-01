@@ -1,0 +1,29 @@
+{
+  "name": "muscleatlas",
+  "version": "2.1.0",
+  "scripts": {
+    "build:www": "node scripts/build-www.js",
+    "sync": "npm run build:www && cap sync android",
+    "open:android": "cap open android"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flobra9-works/muscleatlas.git"
+  },
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/flobra9-works/muscleatlas/issues"
+  },
+  "homepage": "https://github.com/flobra9-works/muscleatlas#readme",
+  "private": true,
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.0",
+    "pngjs": "^7.0.0",
+    "sharp": "^0.35.4"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/core": "^8.5.0"
+  }
+}

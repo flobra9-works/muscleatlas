@@ -1,0 +1,498 @@
+=== SCENES ===
+scene: Scene  objects=7183
+
+=== TOP-LEVEL COLLECTION TREE (depth 3, with mesh counts) ===
+Scene Collection  [meshes: 4568, direct children: 12]
+  1: Skeletal system  [meshes: 1244, direct children: 0]
+  2: Muscular insertions  [meshes: 705, direct children: 0]
+  3: Joints  [meshes: 480, direct children: 0]
+  4: Muscular system  [meshes: 789, direct children: 0]
+  5: Cardiovascular system  [meshes: 60, direct children: 0]
+  6: Lymphoid organs  [meshes: 220, direct children: 0]
+  7: Nervous system & Sense organs  [meshes: 460, direct children: 0]
+  8: Visceral systems  [meshes: 254, direct children: 0]
+  9: Regions of human body  [meshes: 299, direct children: 0]
+  Reference lines, reference planes, movements  [meshes: 52, direct children: 0]
+  Cross section planes  [meshes: 3, direct children: 0]
+  Bonus collection  [meshes: 3373, direct children: 9]
+    Skeletal system  [meshes: 804, direct children: 15]
+      Axial skeleton  [meshes: 216, direct children: 0]
+      Appendicular skeleton  [meshes: 129, direct children: 2]
+      Cranium  [meshes: 158, direct children: 6]
+      Extracranial bones of head  [meshes: 34, direct children: 2]
+      Auditory ossicles  [meshes: 38, direct children: 3]
+      Teeth  [meshes: 48, direct children: 5]
+      Nasal cartilages  [meshes: 0, direct children: 2]
+      Cartilages of ear  [meshes: 0, direct children: 3]
+      Laryngeal cartilages  [meshes: 36, direct children: 5]
+      Vertebral column  [meshes: 130, direct children: 3]
+      Thoracic skeleton  [meshes: 100, direct children: 2]
+      Bones of upper limb  [meshes: 38, direct children: 2]
+      Bony pelvis  [meshes: 4, direct children: 1]
+      Bones of lower limb  [meshes: 155, direct children: 2]
+      Cartilages  [meshes: 31, direct children: 0]
+    Muscular insertions  [meshes: 0, direct children: 2]
+      Axial insertions  [meshes: 0, direct children: 29]
+      Appendicular insertions  [meshes: 0, direct children: 2]
+    Arthrology  [meshes: 418, direct children: 8]
+      Joints  [meshes: 7, direct children: 4]
+      Joints of skull  [meshes: 14, direct children: 3]
+      Joints of auditory ossicles  [meshes: 0, direct children: 2]
+      Laryngeal joints  [meshes: 8, direct children: 2]
+      Joints of vertebral column  [meshes: 57, direct children: 3]
+      Thoracic joints  [meshes: 10, direct children: 3]
+      Joints of upper limb  [meshes: 144, direct children: 2]
+      Joints of lower limb  [meshes: 178, direct children: 2]
+    Muscular system  [meshes: 731, direct children: 14]
+      Superficial muscles  [meshes: 120, direct children: 0]
+      Muscles  [meshes: 509, direct children: 2]
+      Fascia  [meshes: 56, direct children: 2]
+      Synovial bursae  [meshes: 0, direct children: 1]
+      Tendon sheaths  [meshes: 38, direct children: 0]
+      Cranial part of muscular system  [meshes: 91, direct children: 3]
+      Cervical part of muscular system  [meshes: 63, direct children: 3]
+      Dorsal part of muscular system  [meshes: 61, direct children: 3]
+      Thoracic part of muscular system  [meshes: 6, direct children: 1]
+      Abdominal part of muscular system  [meshes: 21, direct children: 2]
+      Pelvic part of muscular system  [meshes: 0, direct children: 2]
+      Muscular system of upper limb  [meshes: 122, direct children: 3]
+      Muscular system of lower limb  [meshes: 159, direct children: 4]
+      Bursae  [meshes: 78, direct children: 0]
+    Cardiovascular system  [meshes: 22, direct children: 8]
+      Vessels  [meshes: 0, direct children: 3]
+      Vascular plexuses  [meshes: 0, direct children: 0]
+      Pulmonary vessels  [meshes: 1, direct children: 2]
+      Cardiac vessels  [meshes: 0, direct children: 2]
+      Systemic arteries  [meshes: 1, direct children: 6]
+      Systemic veins  [meshes: 3, direct children: 8]
+      Great lymphatic vessels  [meshes: 0, direct children: 2]
+      Heart  [meshes: 17, direct children: 9]
+    Nervous system  [meshes: 606, direct children: 3]
+      Central nervous system  [meshes: 271, direct children: 4]
+      Peripheral nervous system  [meshes: 306, direct children: 7]
+      Sense organs  [meshes: 29, direct children: 4]
+    Visceral systems  [meshes: 177, direct children: 8]
+      Digestive system  [meshes: 78, direct children: 8]
+      Respiratory system  [meshes: 13, direct children: 5]
+      Thoracic cavity  [meshes: 0, direct children: 3]
+      Urinary system  [meshes: 6, direct children: 4]
+      Genital systems'  [meshes: 15, direct children: 2]
+      Abdominopelvic cavity  [meshes: 3, direct children: 5]
+      Lymphoid system  [meshes: 54, direct children: 2]
+      Endocrine glands  [meshes: 8, direct children: 5]
+    Regions of human body  [meshes: 2726, direct children: 9]
+      Regions of head  [meshes: 94, direct children: 3]
+      Regions of neck  [meshes: 23, direct children: 3]
+      Regions of thorax  [meshes: 16, direct children: 1]
+      Regions of abdomen  [meshes: 15, direct children: 2]
+      Regions of perineum  [meshes: 5, direct children: 1]
+      Regions of upper limb  [meshes: 42, direct children: 6]
+      Regions of lower limb  [meshes: 60, direct children: 6]
+      Integument  [meshes: 14, direct children: 3]
+      Main divisions  [meshes: 2698, direct children: 11]
+    Reference lines, planes & movements'  [meshes: 37, direct children: 5]
+      General terms  [meshes: 14, direct children: 0]
+      Reference planes  [meshes: 4, direct children: 2]
+      Reference lines  [meshes: 8, direct children: 0]
+      Movements  [meshes: 11, direct children: 0]
+      Orientations  [meshes: 14, direct children: 0]
+
+=== TOTALS ===
+mesh objects total: 4569
+collections total: 1944
+
+=== COLLECTIONS WHOSE NAME LOOKS MUSCLE-RELATED ===
+  2: Muscular insertions  [meshes: 705]
+  4: Muscular system  [meshes: 789]
+  Abdominal part of muscular system  [meshes: 21]
+  Biceps brachii muscle  [meshes: 0]
+  Biceps femoris muscle  [meshes: 0]
+  Cervical part of muscular system  [meshes: 63]
+  Ciliary muscle  [meshes: 0]
+  Cranial part of muscular system  [meshes: 91]
+  Cricothyroid muscle  [meshes: 0]
+  Deep gluteal muscles  [meshes: 11]
+  Deltoid muscle  [meshes: 6]
+  Digastric muscle  [meshes: 0]
+  Dorsal part of muscular system  [meshes: 61]
+  Epaxial muscles  [meshes: 38]
+  Epicranius muscle  [meshes: 0]
+  External abdominal oblique muscle  [meshes: 0]
+  Extra-ocular muscles  [meshes: 0]
+  Extrinsic auricular muscles  [meshes: 0]
+  Facial muscles  [meshes: 35]
+  Fascia of muscles  [meshes: 0]
+  Fibromusculocartilaginous layer of trachea  [meshes: 0]
+  Gastrocnemius muscle  [meshes: 0]
+  Hyoglossus muscle  [meshes: 0]
+  Hypaxial muscles of back  [meshes: 23]
+  Iliocostalis muscles  [meshes: 0]
+  Iliopsoas muscle  [meshes: 0]
+  Infrahyoid muscles  [meshes: 0]
+  Insertions of adductor muscles of hip  [meshes: 0]
+  Insertions of anconeus muscle  [meshes: 0]
+  Insertions of biceps brachii muscle  [meshes: 0]
+  Insertions of biceps femoris muscle  [meshes: 0]
+  Insertions of brachioradialis muscle  [meshes: 0]
+  Insertions of buccinator muscle  [meshes: 0]
+  Insertions of coracoradialis muscle  [meshes: 0]
+  Insertions of deltoid muscle  [meshes: 0]
+  Insertions of extensor hallucis longus muscle  [meshes: 0]
+  Insertions of external abdominal oblique muscle  [meshes: 0]
+  Insertions of facial muscles  [meshes: 0]
+  Insertions of fibularis brevis muscle  [meshes: 0]
+  Insertions of fibularis tertius muscle  [meshes: 0]
+  Insertions of flexor carpi ulnaris muscle  [meshes: 0]
+  Insertions of flexor pollicis longus muscle  [meshes: 0]
+  Insertions of gemellus muscles  [meshes: 0]
+  Insertions of geniohyoid muscle  [meshes: 0]
+  Insertions of gluteal muscles  [meshes: 0]
+  Insertions of gluteus maximus muscle  [meshes: 0]
+  Insertions of gluteus medius muscle  [meshes: 0]
+  Insertions of gracilis muscle  [meshes: 0]
+  Insertions of Iliopsoas muscle  [meshes: 0]
+  Insertions of infraspinatus muscle  [meshes: 0]
+  Insertions of internal abdominal oblique muscle  [meshes: 0]
+  Insertions of obturator externus muscle  [meshes: 0]
+  Insertions of obturator internus muscle  [meshes: 0]
+  Insertions of omohyoid muscle  [meshes: 0]
+  Insertions of pectoralis minor muscle  [meshes: 0]
+  Insertions of plantar interossei muscle  [meshes: 0]
+  Insertions of popliteus muscle  [meshes: 0]
+  Insertions of procerus muscle  [meshes: 0]
+  Insertions of pronator quadratus muscle  [meshes: 0]
+  Insertions of pronator teres muscle  [meshes: 0]
+  Insertions of pterygoid muscles  [meshes: 0]
+  Insertions of quadratus femoris muscle  [meshes: 0]
+  Insertions of rectus abdominis muscle  [meshes: 0]
+  Insertions of rectus posterior major muscle  [meshes: 0]
+  Insertions of rectus posterior minor muscle  [meshes: 0]
+  Insertions of rhomboid muscles  [meshes: 0]
+  Insertions of sartorius muscle  [meshes: 0]
+  Insertions of semimenbranosus muscle  [meshes: 0]
+  Insertions of semitendinosus muscle  [meshes: 0]
+  Insertions of serratus anterior muscle  [meshes: 0]
+  Insertions of serratus posterior inferior muscle  [meshes: 0]
+  Insertions of serratus posterior superior muscle  [meshes: 0]
+  Insertions of Sternohyoid muscle  [meshes: 0]
+  Insertions of subscapularis muscle  [meshes: 0]
+  Insertions of supinator muscle  [meshes: 0]
+  Insertions of supraspinatus muscle  [meshes: 0]
+  Insertions of temporalis muscle  [meshes: 0]
+  Insertions of teres major muscle  [meshes: 0]
+  Insertions of teres minor muscle  [meshes: 0]
+  Insertions of thyrohyoid muscle  [meshes: 0]
+  Insertions of tibialis anterior muscle  [meshes: 0]
+  Insertions of tibialis posterior muscle  [meshes: 0]
+  Insertions of transverse abdominal muscle  [meshes: 0]
+  Insertions of trapezius muscle  [meshes: 0]
+  Internal abdominal oblique muscle  [meshes: 0]
+  Interspinales muscles  [meshes: 0]
+  Intertransversarii muscles  [meshes: 0]
+  Intrinsic auricular muscles  [meshes: 0]
+  Laryngeal muscles  [meshes: 15]
+  Lateral intertransversarii lumborum muscles  [meshes: 0]
+  Lateral pterygoid muscle  [meshes: 0]
+  Lateral rectus muscle  [meshes: 0]
+  Longissimus muscles  [meshes: 0]
+  Longissimus thoracis muscle  [meshes: 0]
+  Longitudinal muscular layer of colon  [meshes: 0]
+  Masticatory muscles  [meshes: 0]
+  Medial pterygoid muscle  [meshes: 0]
+  Multifidus muscles  [meshes: 0]
+  Muscle  [meshes: 0]
+  Muscle of anal triangle  [meshes: 0]
+  Muscles  [meshes: 509]
+  Muscles of abdomen  [meshes: 15]
+  Muscles of auditory ossicles  [meshes: 0]
+  Muscles of foot  [meshes: 30]
+  Muscles of hand  [meshes: 24]
+  Muscles of head  [meshes: 91]
+  Muscles of lower limb  [meshes: 159]
+  Muscles of neck  [meshes: 63]
+  Muscles of pelvis  [meshes: 0]
+  Muscles of soft palate  [meshes: 0]
+  Muscles of tongue  [meshes: 0]
+  Muscles of upper limb  [meshes: 116]
+  Muscles of urogenital triangle  [meshes: 0]
+  Muscular arteries'  [meshes: 0]
+  Muscular insertions  [meshes: 0]
+  Muscular layer of bladder  [meshes: 0]
+  Muscular layer of colon  [meshes: 0]
+  Muscular layer of female urethra  [meshes: 0]
+  Muscular layer of male urethra  [meshes: 0]
+  Muscular layer of oesophagus  [meshes: 0]
+  Muscular layer of rectum  [meshes: 0]
+  Muscular layer of small intestine  [meshes: 0]
+  Muscular layer of stomach  [meshes: 0]
+  Muscular system  [meshes: 731]
+  Muscular system of lower limb  [meshes: 159]
+  Muscular system of upper limb  [meshes: 122]
+  Musculocutaneous nerve  [meshes: 8]
+  Musculotubal canal  [meshes: 0]
+  Myocardium  [meshes: 0]
+  Nasalis muscle  [meshes: 0]
+  Oblique arythenoid muscle  [meshes: 0]
+  Occipitofrontalis muscle  [meshes: 0]
+  Omohyoid muscle  [meshes: 0]
+  Orbiculari oris muscle  [meshes: 0]
+  Orbicularis oculi muscle  [meshes: 0]
+  Palatopharyngeus muscle  [meshes: 0]
+  Papillary muscles of left ventricle  [meshes: 0]
+  Papillary muscles of right ventricle  [meshes: 0]
+  Pectoralis major muscle  [meshes: 6]
+  Pelvic part of muscular system  [meshes: 0]
+  Perineal muscles  [meshes: 0]
+  Pharyngeal muscles  [meshes: 10]
+  Quadriceps femoris muscle  [meshes: 0]
+  Recto-urethral muscles  [meshes: 0]
+  Rectus abdominis muscle  [meshes: 0]
+  Retcus femoris muscle  [meshes: 0]
+  Rotator cuff muscles  [meshes: 8]
+  Sartorius muscle  [meshes: 0]
+  Scapulohumeral muscles  [meshes: 14]
+  Semispinalis muscles  [meshes: 0]
+  Smooth muscles of infraperitoneal space  [meshes: 0]
+  Soleus muscle  [meshes: 0]
+  Spinalis muscles  [meshes: 0]
+  Spinotransversales muscles  [meshes: 0]
+  Splenius muscles  [meshes: 0]
+  Sternocleidomastoid muscle  [meshes: 0]
+  Suboccipital muscles  [meshes: 8]
+  Superficial gluteal muscles  [meshes: 8]
+  Superficial muscles  [meshes: 120]
+  Superficial muscles of head  [meshes: 35]
+  Superior oblique muscle  [meshes: 0]
+  Suprahyoid muscles  [meshes: 0]
+  Suspensory muscle of duodenum  [meshes: 0]
+  Tendon of quadriceps femoris muscle  [meshes: 0]
+  Thoracic part of muscular system  [meshes: 6]
+  Thyro-arythenoid muscle  [meshes: 0]
+  Transversospinal muscles  [meshes: 12]
+  Transversus abdominis muscle  [meshes: 0]
+  Trapezius muscle  [meshes: 6]
+  Triceps brachii muscle  [meshes: 0]
+  Triceps surae muscle  [meshes: 0]
+  Trigonal muscles  [meshes: 0]
+
+=== SAMPLE OBJECT NAMES (first 60 meshes) ===
+   Posterior transverse collateral sulcus.l
+   Posterior transverse collateral sulcus.r
+  (Abdominal part of pectoralis major muscle).l
+  (Abdominal part of pectoralis major muscle).ol
+  (Abdominal part of pectoralis major muscle).or
+  (Abdominal part of pectoralis major muscle).r
+  (Accessory parotid gland).l
+  (Accessory parotid gland).r
+  (Adductor minimus).l
+  (Adductor minimus).r
+  (Anterior tibial node).l
+  (Anterior tibial node).r
+  (Canal for vertebral artery).j
+  (External occipital crest).j
+  (Fibular node).l
+  (Fibular node).r
+  (Iliopectineal bursa).l
+  (Iliopectineal bursa).r
+  (Intermediate deep inguinal node).l
+  (Intermediate deep inguinal node).r
+  (Intermediate lacunar node).l
+  (Intermediate lacunar node).r
+  (Internal occipital crest).j
+  (Lateral lacunar node).l
+  (Lateral lacunar node).r
+  (Mandibular symphysis).j
+  (Medial lacunar node).l
+  (Medial lacunar node).r
+  (Middle clinoid process).j
+  (Opponens digiti minimi muscle of foot).l
+  (Opponens digiti minimi muscle of foot).ol
+  (Opponens digiti minimi muscle of foot).or
+  (Opponens digiti minimi muscle of foot).r
+  (Pancreatic impression of spleen).j
+  (Posterior obturator tubercle).i
+  (Posterior obturator tubercle).j
+  (Posterior tibial node).l
+  (Posterior tibial node).r
+  (Proximal deep inguinal node).l
+  (Proximal deep inguinal node).r
+  (Pyramidal lobe).j
+  (Retropyloric nodes)
+  (Subpyloric nodes)
+  (Supra-orbital notch).j
+  (Suprapyloric node)
+  (Third trochanter).i
+  (Third trochanter).j
+  (Vermian fossa).j
+  [Trochlear spine].j
+  Abdominal lymph nodes.j
+  Abdominal part of muscular system.j
+  Abdominopelvic cavity.j
+  Abduction
+  Abductor digiti minimi of foot.el
+  Abductor digiti minimi of foot.er
+  Abductor digiti minimi of foot.l
+  Abductor digiti minimi of foot.r
+  Abductor digiti minimi of hand.el
+  Abductor digiti minimi of hand.er
+  Abductor digiti minimi of hand.l
+
+=== NAMES CONTAINING KEY MUSCLE TERMS (up to 12 each) ===
+  Pectoralis:        29
+      (Abdominal part of pectoralis major muscle).l
+      (Abdominal part of pectoralis major muscle).ol
+      (Abdominal part of pectoralis major muscle).or
+      (Abdominal part of pectoralis major muscle).r
+      Clavicular head of pectoralis major muscle.l
+      Clavicular head of pectoralis major muscle.r
+      Pectoralis major muscle.el
+      Pectoralis major muscle.er
+      Pectoralis major muscle.j
+      Pectoralis major muscle.ol
+      Pectoralis major muscle.or
+      Pectoralis minor muscle.e1l
+  Deltoid:           25
+      Acromial part of deltoid muscle.l
+      Acromial part of deltoid muscle.ol
+      Acromial part of deltoid muscle.or
+      Acromial part of deltoid muscle.r
+      Clavicular part of deltoid muscle.l
+      Clavicular part of deltoid muscle.ol
+      Clavicular part of deltoid muscle.or
+      Clavicular part of deltoid muscle.r
+      Deltoid fascia.l
+      Deltoid fascia.r
+      Deltoid muscle.el
+      Deltoid muscle.er
+  Biceps:            23
+      Biceps brachii muscle.el
+      Biceps brachii muscle.er
+      Biceps brachii muscle.j
+      Biceps femoris muscle.el
+      Biceps femoris muscle.er
+      Inferior subtendinous bursa of biceps femoris muscle.l
+      Inferior subtendinous bursa of biceps femoris muscle.r
+      Long head of biceps brachii.l
+      Long head of biceps brachii.ol
+      Long head of biceps brachii.or
+      Long head of biceps brachii.r
+      Long head of biceps femoris.l
+  Triceps:           19
+      Lateral head of triceps brachii.l
+      Lateral head of triceps brachii.ol
+      Lateral head of triceps brachii.or
+      Lateral head of triceps brachii.r
+      Long head of triceps brachii.l
+      Long head of triceps brachii.ol
+      Long head of triceps brachii.or
+      Long head of triceps brachii.r
+      Medial head of triceps brachii.l
+      Medial head of triceps brachii.ol
+      Medial head of triceps brachii.or
+      Medial head of triceps brachii.r
+  Rectus abdominis:  6
+      Rectus abdominis muscle.l
+      Rectus abdominis muscle.r
+      Rectus abdominis muscle.el
+      Rectus abdominis muscle.er
+      Rectus abdominis muscle.ol
+      Rectus abdominis muscle.or
+  Latissimus:        6
+      Latissimus dorsi muscle.el
+      Latissimus dorsi muscle.er
+      Latissimus dorsi muscle.l
+      Latissimus dorsi muscle.ol
+      Latissimus dorsi muscle.or
+      Latissimus dorsi muscle.r
+  Trapezius:         17
+      Ascending part of trapezius muscle.el
+      Ascending part of trapezius muscle.er
+      Ascending part of trapezius muscle.l
+      Ascending part of trapezius muscle.ol
+      Ascending part of trapezius muscle.or
+      Ascending part of trapezius muscle.r
+      Descending part of trapezius muscle.l
+      Descending part of trapezius muscle.ol
+      Descending part of trapezius muscle.or
+      Descending part of trapezius muscle.r
+      Subtendinous bursa of trapezius muscle.l
+      Subtendinous bursa of trapezius muscle.r
+  Quadriceps:        2
+      Quadriceps femoris muscle.el
+      Quadriceps femoris muscle.er
+  Vastus:            12
+      Vastus intermedius muscle.l
+      Vastus intermedius muscle.ol
+      Vastus intermedius muscle.or
+      Vastus intermedius muscle.r
+      Vastus lateralis muscle.l
+      Vastus lateralis muscle.ol
+      Vastus lateralis muscle.or
+      Vastus lateralis muscle.r
+      Vastus medialis muscle.l
+      Vastus medialis muscle.ol
+      Vastus medialis muscle.or
+      Vastus medialis muscle.r
+  Gluteus:           24
+      Gluteus maximus muscle.el
+      Gluteus maximus muscle.er
+      Gluteus maximus muscle.l
+      Gluteus maximus muscle.ol
+      Gluteus maximus muscle.or
+      Gluteus maximus muscle.r
+      Gluteus medius muscle.el
+      Gluteus medius muscle.er
+      Gluteus medius muscle.l
+      Gluteus medius muscle.ol
+      Gluteus medius muscle.or
+      Gluteus medius muscle.r
+  Gastrocnemius:     12
+      Lateral head of gastrocnemius.l
+      Lateral head of gastrocnemius.ol
+      Lateral head of gastrocnemius.or
+      Lateral head of gastrocnemius.r
+      Lateral subtendinous bursa of gastrocnemius muscle.l
+      Lateral subtendinous bursa of gastrocnemius muscle.r
+      Medial head of gastrocnemius.l
+      Medial head of gastrocnemius.ol
+      Medial head of gastrocnemius.or
+      Medial head of gastrocnemius.r
+      Medial subtendinous bursa of gastrocnemius muscle.l
+      Medial subtendinous bursa of gastrocnemius muscle.r
+  Oblique:           54
+      Ary-epiglottic part of oblique arytenoid muscle.l
+      Ary-epiglottic part of oblique arytenoid muscle.r
+      External abdominal oblique muscle.l
+      External abdominal oblique muscle.o1l
+      External abdominal oblique muscle.o1r
+      External abdominal oblique muscle.o2l
+      External abdominal oblique muscle.o2r
+      External abdominal oblique muscle.o3l
+      External abdominal oblique muscle.o4l
+      External abdominal oblique muscle.o4r
+      External abdominal oblique muscle.o5l
+      External abdominal oblique muscle.o5r
+  Erector:           3
+      Erector spinae.j
+      Erector spinae.ol
+      Erector spinae.or
+  Adductor:          45
+      (Adductor minimus).l
+      (Adductor minimus).r
+      Adductor brevis.l
+      Adductor brevis.r
+      Adductor hallucis.j
+      Adductor longus.el
+      Adductor longus.er
+      Adductor longus.l
+      Adductor longus.ol
+      Adductor longus.or
+      Adductor longus.r
+      Adductor magnus.el
+  Soleus:            6
+      Soleus muscle.l
+      Soleus muscle.r
+      Soleus muscle.o1l
+      Soleus muscle.o1r
+      Soleus muscle.ol
+      Soleus muscle.or
