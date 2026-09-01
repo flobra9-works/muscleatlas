@@ -1,30 +1,30 @@
 /* MuscleAtlas — service worker (offline app shell) */
 
-const CACHE = 'muscleatlas-v10';
+const CACHE = 'muscleatlas-v14';
 /* Must match the ?v= versions in index.html */
 const DATEIEN = [
   './',
   './index.html',
-  './css/style.css?v=10',
-  './data/muscles.js?v=10',
-  './data/bodyregions.js?v=10',
-  './data/exercises.js?v=10',
-  './js/state.js?v=10',
-  './js/heartrate.js?v=10',
-  './js/bodymap.js?v=10',
-  './js/exercises.js?v=10',
-  './js/workouts.js?v=10',
-  './js/training.js?v=10',
-  './js/history.js?v=10',
-  './js/app.js?v=10',
+  './css/style.css?v=14',
+  './data/muscles.js?v=14',
+  './data/bodyregions.js?v=14',
+  './data/exercises.js?v=14',
+  './js/state.js?v=14',
+  './js/heartrate.js?v=14',
+  './js/bodymap.js?v=14',
+  './js/exercises.js?v=14',
+  './js/workouts.js?v=14',
+  './js/training.js?v=14',
+  './js/history.js?v=14',
+  './js/app.js?v=14',
   './manifest.json',
   './icons/icon.svg',
   './icons/icon-192.png',
   './icons/icon-512.png',
-  './assets/body/front.webp?v=10',
-  './assets/body/back.webp?v=10',
-  './assets/body/front-id.png?v=10',
-  './assets/body/back-id.png?v=10'
+  './assets/body/front.webp?v=14',
+  './assets/body/back.webp?v=14',
+  './assets/body/front-id.png?v=14',
+  './assets/body/back-id.png?v=14'
 ];
 
 self.addEventListener('install', ev => {

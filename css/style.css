@@ -694,15 +694,21 @@ input[type=number] { -moz-appearance: textfield; }
 
 .plate-hotspot { pointer-events: auto; cursor: pointer; }
 .plate-hotspot .ring {
-  fill: rgba(12, 14, 26, .45); stroke: var(--akzent); stroke-width: 9;
-  filter: drop-shadow(0 0 10px var(--glow));
+  fill: rgba(12, 14, 26, .45); stroke: var(--gelb); stroke-width: 9;
+  filter: drop-shadow(0 0 10px rgba(255, 210, 63, .45));
 }
-.plate-hotspot:active .ring { fill: rgba(255, 107, 44, .3); }
-.plate-hotspot .badge { fill: #2f6bff; stroke: #0c0e1a; stroke-width: 6; }
+.plate-hotspot:active .ring { fill: rgba(255, 210, 63, .28); }
+.plate-hotspot .badge { fill: var(--gelb); stroke: #0c0e1a; stroke-width: 6; }
 .plate-hotspot .badge-text {
-  fill: #fff; font-size: 26px; font-weight: 800; text-anchor: middle;
+  fill: #1c0a10; font-size: 26px; font-weight: 800; text-anchor: middle;
   font-family: system-ui, sans-serif;
 }
+
+.plate-hinweis {
+  position: relative; z-index: 3; margin-top: 8px; text-align: center;
+  font-size: .78rem; color: var(--gelb);
+}
+.plate-hinweis .hinweis-klein { color: var(--text-gedimmt); }
 
 /* Mini bodies in the exercise detail heatmap.
    The full-size plate is sized by height (min(58vh,520px)); inside the detail

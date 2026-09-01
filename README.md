@@ -140,6 +140,25 @@ node scripts/build-bodyplates.js
    Im **ID-Pass** (nicht in der Grafik!) werden sie 12 mm zur jeweiligen Kamera
    geschoben, sonst wählt ein Tipp auf das Sixpack die schrägen Bauchmuskeln.
 
+**Warn-Ringe („vernachlässigte Muskeln"):** Gelbe Ringe markieren Muskeln, die
+du länger nicht trainiert hast; die Zahl im Abzeichen sind **Tage seit dem
+letzten Mal**. Antippen springt direkt zu den passenden Übungen.
+
+- Zählt auch **sekundäre** Beanspruchung — Unterarme und Rumpf sind selten das
+  Hauptziel, bekommen bei Rudern und Kniebeugen aber reichlich Reiz. Sonst
+  würden sie dauerhaft gemeldet, ohne dass es stimmt.
+- **Nie trainiert** zählt so alt wie das Log selbst. „Nie" in einem zwei Wochen
+  alten Log ist schwächer als eine echte 30-Tage-Lücke — beides landet damit
+  auf derselben Skala und die echten Lücken werden nicht verdrängt.
+- Erst ab **3 Einheiten** überhaupt sichtbar, Schwelle **10 Tage**, „nie" erst
+  ab **14 Tagen** Log-Alter, maximal **6 Ringe**. Sonst wäre der Körper bei
+  neuen Nutzern komplett zugepflastert — Nörgeln statt Information.
+- Sich überlappende Ringe werden auseinandergeschoben (benachbarte Muskeln wie
+  obere Brust, vorderer Delta und Bizeps liegen dicht beieinander).
+
+Stellschrauben: `MIN_SESSIONS`, `STALE_TAGE`, `NIE_AB_TAGEN`, `MAX_MARKER`
+in `js/bodymap.js`.
+
 **Lizenz/Attribution (Pflicht):** Die Grafik ist abgeleitet von
 **Z-Anatomy** (CC BY-SA 4.0), das wiederum auf **BodyParts3D**
 (CC BY-SA 2.1 Japan) beruht. Damit stehen **die gerenderten Bilder unter

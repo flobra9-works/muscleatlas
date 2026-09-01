@@ -18,7 +18,7 @@ const BodyMap = {
   DATEI: { vorne: 'front', hinten: 'back' },
   // Bump alongside the ?v= in index.html — without it browsers keep serving the
   // previous id map and clicks land on last build's regions.
-  V: '?v=10',
+  V: '?v=14',
   BREITE: 1029, HOEHE: 2700,            // plate aspect ratio
 
   ansicht: 'vorne',
@@ -173,7 +173,8 @@ const BodyMap = {
       `<button data-z="0" aria-label="Reset view">⤢</button>` +
       `<button data-z="+" aria-label="Zoom in">+</button>` +
       `</div></div>` +
-      `<div class="plate-buehne">${this.plateHtml(this.ansicht)}</div>`;
+      `<div class="plate-buehne">${this.plateHtml(this.ansicht)}</div>` +
+      `<div class="plate-hinweis versteckt" id="plateHinweis"></div>`;
 
     const buehne = wrap.querySelector('.plate-buehne');
     const plate = wrap.querySelector('.koerper-plate');
@@ -274,58 +275,168 @@ const BodyMap = {
     this.faerbe(canvas, this.ansicht, map, 0.78);
   },
 
-  /* Ring markers: muscles trained in the last 7 days, badge = sets. */
-  hotspotDaten() {
-    if (typeof Speicher === 'undefined' || !Speicher.daten) return {};
-    const grenze = Date.now() - 7 * 864e5;
-    const proRegion = {};
-    (Speicher.daten.verlauf || []).forEach(s => {
-      if (s.start < grenze) return;
+  /* ---------- Ring markers: muscles you are neglecting ----------
+     Badge = days since that muscle was last worked; "–" means never.
+     Tapping a ring jumps straight to exercises for it. */
+
+  MIN_SESSIONS: 3,      // below this there is no pattern worth judging
+  STALE_TAGE: 10,       // untouched this long counts as neglected
+  NIE_AB_TAGEN: 14,     // "never trained" only means something once history is this old
+  MAX_MARKER: 6,        // a body covered in rings nags instead of informing
+
+  vernachlaessigt() {
+    if (typeof Speicher === 'undefined' || !Speicher.daten) return [];
+    const sessions = Speicher.daten.verlauf || [];
+    // A new user has trained nothing, which would light up all 20 muscles at
+    // once. Say nothing until there is enough history to be worth a comment.
+    if (sessions.length < this.MIN_SESSIONS) return [];
+
+    // Secondary involvement counts as worked. Forearms and core are almost
+    // nobody's primary target, but rows and squats hammer them — flagging those
+    // every week would be noise, not a useful signal.
+    const zuletzt = {};
+    let aeltester = Infinity;
+    sessions.forEach(s => {
+      aeltester = Math.min(aeltester, s.start);
       (s.saetze || []).forEach(x => {
         const u = uebungVonId(x.uebungId);
         if (!u) return;
-        u.primaer.forEach(r => { proRegion[r] = (proRegion[r] || 0) + 1; });
+        u.primaer.concat(u.sekundaer).forEach(r => {
+          if (!zuletzt[r] || s.start > zuletzt[r]) zuletzt[r] = s.start;
+        });
       });
     });
-    return proRegion;
+
+    const jetzt = Date.now();
+    const spanneTage = (jetzt - aeltester) / 864e5;
+
+    // A muscle never trained counts as stale for as long as the log has existed.
+    // Putting "never" and "not since March" on the same scale is what makes the
+    // ranking honest: "never" in a two-week-old log is weaker evidence than a
+    // genuine 30-day gap, and ranking all the "nevers" first would have buried
+    // the real gaps below the cap.
+    const treffer = [];
+    BODY_REGIONEN.forEach(rid => {
+      const nie = !zuletzt[rid];
+      if (nie && spanneTage < this.NIE_AB_TAGEN) return;
+      const tage = nie ? Math.floor(spanneTage)
+                       : Math.floor((jetzt - zuletzt[rid]) / 864e5);
+      if (tage >= this.STALE_TAGE) treffer.push({ rid, tage, nie });
+    });
+
+    treffer.sort((a, b) => b.tage - a.tage);
+    return treffer.slice(0, this.MAX_MARKER);
   },
 
-  // Centre of a region's pixels, in id-map space scaled to the plate viewBox.
+  /* Where to put a region's marker, in plate viewBox coordinates.
+
+     Two traps here, both of which put rings in the wrong place:
+     - Almost every muscle is a symmetric left/right pair, so the centroid of
+       all its pixels lands on the midline. Averaging naively stacks every
+       marker in a column down the sternum. Use one side of the body only.
+     - The centroid of a curved or hollow region can fall outside the region
+       itself, so snap to the nearest pixel that really belongs to it. */
   _mittelpunkt(ansicht, regionId) {
     const k = this._karten[ansicht];
     const liste = k && k.regionen[regionId];
     if (!liste || !liste.length) return null;
-    let sx = 0, sy = 0;
-    const schritt = Math.max(1, Math.floor(liste.length / 400));
-    let n = 0;
+
+    const halbe = k.w / 2;
+    const schritt = Math.max(1, Math.floor(liste.length / 800));
+
+    let nurLinks = true;
+    let sx = 0, sy = 0, n = 0;
     for (let i = 0; i < liste.length; i += schritt) {
-      sx += liste[i] % k.w; sy += Math.floor(liste[i] / k.w); n++;
+      const x = liste[i] % k.w;
+      if (x > halbe) continue;                 // one side only
+      sx += x; sy += Math.floor(liste[i] / k.w); n++;
     }
-    return { x: (sx / n) * (this.BREITE / k.w), y: (sy / n) * (this.HOEHE / k.h) };
+    if (!n) {                                  // region sits entirely on the other side
+      nurLinks = false;
+      for (let i = 0; i < liste.length; i += schritt) {
+        sx += liste[i] % k.w; sy += Math.floor(liste[i] / k.w); n++;
+      }
+    }
+    const cx = sx / n, cy = sy / n;
+
+    let bx = cx, by = cy, best = Infinity;
+    for (let i = 0; i < liste.length; i += schritt) {
+      const x = liste[i] % k.w, y = Math.floor(liste[i] / k.w);
+      if (nurLinks && x > halbe) continue;
+      const d = (x - cx) * (x - cx) + (y - cy) * (y - cy);
+      if (d < best) { best = d; bx = x; by = y; }
+    }
+    return { x: bx * (this.BREITE / k.w), y: by * (this.HOEHE / k.h) };
   },
 
   zeichneHotspots() {
     const wrap = document.getElementById('koerperkarte');
     const svg = wrap && wrap.querySelector('.plate-marker');
     if (!svg) return;
-    const daten = this.hotspotDaten();
+    const liste = this.vernachlaessigt();
 
-    const teile = Object.keys(daten).map(rid => {
-      const p = this._mittelpunkt(this.ansicht, rid);
-      if (!p) return '';
-      const n = daten[rid];
+    const punkte = liste.map(m => {
+      const p = this._mittelpunkt(this.ansicht, m.rid);
+      return p ? Object.assign({ x: p.x, y: p.y }, m) : null;
+    }).filter(Boolean);                        // dropped = not on this side of the body
+    const sichtbar = punkte.length;
+
+    // Neglected muscles cluster (upper chest, front delt and biceps all sit
+    // within a hand's width), so the rings collide. Nudge overlapping pairs
+    // apart. The ring carries its region in data-region, so moving it a little
+    // off the exact muscle costs nothing — it is a labelled button, not a
+    // hit-test target.
+    const MIN_ABSTAND = 112;
+    for (let runde = 0; runde < 12; runde++) {
+      let bewegt = false;
+      for (let i = 0; i < punkte.length; i++) {
+        for (let j = i + 1; j < punkte.length; j++) {
+          const a = punkte[i], b = punkte[j];
+          let dx = b.x - a.x, dy = b.y - a.y;
+          let d = Math.hypot(dx, dy);
+          if (d >= MIN_ABSTAND) continue;
+          if (d < 1) { dx = 1; dy = 0; d = 1; }
+          const schub = (MIN_ABSTAND - d) / 2;
+          a.x -= dx / d * schub; a.y -= dy / d * schub;
+          b.x += dx / d * schub; b.y += dy / d * schub;
+          bewegt = true;
+        }
+      }
+      if (!bewegt) break;
+    }
+
+    svg.innerHTML = punkte.map(({ rid, tage, nie, x, y }) => {
+      const text = tage > 99 ? '99' : String(tage);
+      const titel = nie
+        ? `${regionKurz(rid)} — never trained in your ${tage}-day history`
+        : `${regionKurz(rid)} — last trained ${tage} days ago`;
       return `<g class="plate-hotspot" data-region="${rid}">` +
-        `<circle class="ring" cx="${p.x.toFixed(0)}" cy="${p.y.toFixed(0)}" r="34"/>` +
-        `<circle class="badge" cx="${(p.x + 28).toFixed(0)}" cy="${(p.y - 28).toFixed(0)}" r="21"/>` +
-        `<text class="badge-text" x="${(p.x + 28).toFixed(0)}" y="${(p.y - 20).toFixed(0)}">${n}</text>` +
+        `<title>${titel}</title>` +
+        `<circle class="ring" cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="34"/>` +
+        `<circle class="badge" cx="${(x + 28).toFixed(0)}" cy="${(y - 28).toFixed(0)}" r="21"/>` +
+        `<text class="badge-text" x="${(x + 28).toFixed(0)}" y="${(y - 20).toFixed(0)}">${text}</text>` +
         `</g>`;
-    });
-    svg.innerHTML = teile.join('');
+    }).join('');
     svg.querySelectorAll('.plate-hotspot').forEach(g =>
       g.addEventListener('click', ev => {
         ev.stopPropagation();
         Uebungen.waehleRegion(g.getAttribute('data-region'));
       }));
+
+    // Rings are meaningless without a word of explanation.
+    const hinweis = wrap.querySelector('#plateHinweis');
+    if (hinweis) {
+      const andere = liste.length - sichtbar;
+      hinweis.innerHTML = sichtbar
+        ? `⚠ Not trained recently — the number is days since. ` +
+          (andere ? `<span class="hinweis-klein">${andere} more on the ` +
+                    `${this.ansicht === 'vorne' ? 'back' : 'front'}.</span>` : '')
+        : (liste.length
+            ? `⚠ ${liste.length} neglected muscle${liste.length > 1 ? 's' : ''} on the ` +
+              `${this.ansicht === 'vorne' ? 'back' : 'front'} view.`
+            : '');
+      hinweis.classList.toggle('versteckt', !liste.length);
+    }
   },
 
   /* ---------- mini bodies (exercise detail heatmap) ---------- */
